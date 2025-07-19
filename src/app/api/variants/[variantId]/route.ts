@@ -5,8 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 // PUT: update a variant
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { variantId: string } }
+  context: { params: Promise<{ variantId: string }> }
 ) {
+  const { variantId } = await context.params;
   const { userId, sessionClaims } = await auth();
   if (!userId || sessionClaims?.metadata?.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -20,7 +21,7 @@ export async function PUT(
   }
   try {
     const updated = await prisma.variant.update({
-      where: { id: params.variantId },
+      where: { id: variantId },
       data: { name, variantPrice },
     });
     return NextResponse.json(updated);
@@ -32,14 +33,15 @@ export async function PUT(
 // DELETE: remove a variant
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { variantId: string } }
+  context: { params: Promise<{ variantId: string }> }
 ) {
+  const { variantId } = await context.params;
   const { userId, sessionClaims } = await auth();
   if (!userId || sessionClaims?.metadata?.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {
-    await prisma.variant.delete({ where: { id: params.variantId } });
+    await prisma.variant.delete({ where: { id: variantId } });
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Variant not found" }, { status: 404 });

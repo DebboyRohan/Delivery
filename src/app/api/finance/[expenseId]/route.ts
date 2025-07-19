@@ -2,16 +2,11 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-async function getExpenseId(params: any): Promise<string> {
-  if (typeof params.then === "function") params = await params;
-  return params.expenseId;
-}
-
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { expenseId: string } }
+  context: { params: Promise<{ expenseId: string }> }
 ) {
-  const expenseId = await getExpenseId(params);
+  const { expenseId } = await context.params;
 
   try {
     const expense = await prisma.financeExpense.findUnique({
@@ -38,9 +33,9 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { expenseId: string } }
+  context: { params: Promise<{ expenseId: string }> }
 ) {
-  const expenseId = await getExpenseId(params);
+  const { expenseId } = await context.params;
   const { userId } = await auth();
 
   if (!userId) {
@@ -79,9 +74,9 @@ export async function PUT(
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { expenseId: string } }
+  context: { params: Promise<{ expenseId: string }> }
 ) {
-  const expenseId = await getExpenseId(params);
+  const { expenseId } = await context.params;
 
   try {
     await prisma.financeExpense.delete({

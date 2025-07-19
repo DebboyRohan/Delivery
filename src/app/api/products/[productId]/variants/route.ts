@@ -5,8 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 // POST: add variant to an existing product (must have no price)
 export async function POST(
   req: NextRequest,
-  { params }: { params: { productId: string } }
+  context: { params: Promise<{ productId: string }> }
 ) {
+  const { productId } = await context.params;
   const { userId, sessionClaims } = await auth();
   if (!userId || sessionClaims?.metadata?.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -20,7 +21,7 @@ export async function POST(
   }
   // Ensure product exists and does not have price set
   const product = await prisma.product.findUnique({
-    where: { id: params.productId },
+    where: { id: productId },
   });
   if (!product)
     return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -35,7 +36,7 @@ export async function POST(
   }
   try {
     const variant = await prisma.variant.create({
-      data: { name, variantPrice, productId: params.productId },
+      data: { name, variantPrice, productId },
     });
     return NextResponse.json(variant, { status: 201 });
   } catch {

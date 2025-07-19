@@ -2,16 +2,11 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-async function getOrderId(params: any): Promise<string> {
-  if (typeof params.then === "function") params = await params;
-  return params.orderId;
-}
-
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { orderId: string } }
+  context: { params: Promise<{ orderId: string }> }
 ) {
-  const orderId = await getOrderId(params);
+  const { orderId } = await context.params;
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: {
@@ -26,9 +21,9 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { orderId: string } }
+  context: { params: Promise<{ orderId: string }> }
 ) {
-  const orderId = await getOrderId(params);
+  const { orderId } = await context.params;
   const { userId } = await auth();
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -167,9 +162,9 @@ export async function PUT(
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { orderId: string } }
+  context: { params: Promise<{ orderId: string }> }
 ) {
-  const orderId = await getOrderId(params);
+  const { orderId } = await context.params;
   const { userId } = await auth();
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
