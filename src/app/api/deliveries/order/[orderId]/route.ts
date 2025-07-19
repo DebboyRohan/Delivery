@@ -10,16 +10,12 @@ const allowedStatuses: DeliveryStatus[] = [
   "NOT_AVAILABLE",
 ];
 
-async function getOrderId(params: any): Promise<string> {
-  if (typeof params.then === "function") params = await params;
-  return params.orderId;
-}
-
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { orderId: string } }
+  context: { params: Promise<{ orderId: string }> }
 ) {
-  const orderId = await getOrderId(params);
+  // Await params before accessing properties
+  const { orderId } = await context.params;
   const { status } = await req.json();
 
   if (!allowedStatuses.includes(status as DeliveryStatus)) {
