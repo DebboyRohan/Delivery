@@ -162,8 +162,9 @@ exports.Prisma.OrderScalarFieldEnum = {
   roll: 'roll',
   hall: 'hall',
   deliveryDate: 'deliveryDate',
-  amountRecieved: 'amountRecieved',
-  discount: 'discount',
+  totalAmount: 'totalAmount',
+  totalPaid: 'totalPaid',
+  totalDiscount: 'totalDiscount',
   additionalInfo: 'additionalInfo',
   deliveryStatus: 'deliveryStatus',
   createdAt: 'createdAt',
@@ -176,7 +177,12 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   orderId: 'orderId',
   productId: 'productId',
   variantId: 'variantId',
-  quantity: 'quantity'
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  totalPrice: 'totalPrice',
+  amountPaid: 'amountPaid',
+  discount: 'discount',
+  deliveryStatus: 'deliveryStatus'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
@@ -209,11 +215,10 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.Role = exports.$Enums.Role = {
-  ADMIN: 'ADMIN',
-  SALES: 'SALES',
-  DELIVERY: 'DELIVERY',
-  KEEPER: 'KEEPER',
-  TREASURER: 'TREASURER'
+  admin: 'admin',
+  sales: 'sales',
+  delivery: 'delivery',
+  treasurer: 'treasurer'
 };
 
 exports.FinanceExpenseType = exports.$Enums.FinanceExpenseType = {

@@ -10,12 +10,12 @@ datasource db {
 
 model User {
   id             String           @id @default(uuid())
-  clerkId        String
+  clerkId        String           @unique
   name           String
   email          String           @unique
-  role           Role             @default(DELIVERY)
+  role           Role             @default(delivery)
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime         @updatedAt
   FinanceExpense FinanceExpense[]
   Inventory      Inventory[]
   Order          Order[]
@@ -39,7 +39,7 @@ model FinanceExpense {
 model Inventory {
   id            String   @id @default(uuid())
   productId     String
-  variantId     String
+  variantId     String?
   quantityAdded Int
   costPerUnit   Decimal
   dealer        String
@@ -48,7 +48,7 @@ model Inventory {
   createdAt     DateTime @default(now())
   User          User     @relation(fields: [createdById], references: [id])
   Product       Product  @relation(fields: [productId], references: [id])
-  Variant       Variant  @relation(fields: [variantId], references: [id])
+  Variant       Variant? @relation(fields: [variantId], references: [id])
 }
 
 model Order {
@@ -59,26 +59,33 @@ model Order {
   roll           String?
   hall           Hall
   deliveryDate   DateTime
-  amountRecieved Decimal
-  discount       Decimal        @default(0)
+  totalAmount    Decimal // Sum of all OrderItem.totalPrice
+  totalPaid      Decimal // Sum of all OrderItem.amountPaid
+  totalDiscount  Decimal        @default(0) // Sum of all OrderItem.discount
   additionalInfo String?
   deliveryStatus DeliveryStatus @default(PENDING)
   createdAt      DateTime       @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime       @updatedAt
   referalId      String
   User           User           @relation(fields: [referalId], references: [id])
   OrderItem      OrderItem[]
 }
 
 model OrderItem {
-  id        String  @id @default(uuid())
-  orderId   String
-  productId String
-  variantId String
-  quantity  Int
-  Order     Order   @relation(fields: [orderId], references: [id])
-  Product   Product @relation(fields: [productId], references: [id])
-  Variant   Variant @relation(fields: [variantId], references: [id])
+  id             String         @id @default(uuid())
+  orderId        String
+  productId      String
+  variantId      String?
+  quantity       Int
+  unitPrice      Decimal // Price per unit at order time
+  totalPrice     Decimal // unitPrice * quantity
+  amountPaid     Decimal // Amount paid for THIS specific item
+  discount       Decimal        @default(0) // Discount given for THIS item
+  deliveryStatus DeliveryStatus @default(PENDING)
+
+  Order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  Product Product  @relation(fields: [productId], references: [id])
+  Variant Variant? @relation(fields: [variantId], references: [id])
 }
 
 model Product {
@@ -105,11 +112,10 @@ model Variant {
 }
 
 enum Role {
-  ADMIN
-  SALES
-  DELIVERY
-  KEEPER
-  TREASURER
+  admin
+  sales
+  delivery
+  treasurer
 }
 
 enum DeliveryStatus {

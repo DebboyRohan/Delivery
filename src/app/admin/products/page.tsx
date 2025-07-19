@@ -154,7 +154,7 @@ export default function ProductsPage() {
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Products</h1>
         <Button
@@ -169,7 +169,7 @@ export default function ProductsPage() {
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>
-              <TableHead className="w-14 text-center"></TableHead>
+              <TableHead className="w-2 text-center"></TableHead>
               <TableHead className="text-left font-semibold">Name</TableHead>
               <TableHead className="text-center font-semibold">Price</TableHead>
               <TableHead className="text-left font-semibold">

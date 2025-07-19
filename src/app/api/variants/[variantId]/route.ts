@@ -1,11 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
 
-// PUT: update variant
+// PUT: update a variant
 export async function PUT(
   req: NextRequest,
   { params }: { params: { variantId: string } }
 ) {
+  const { userId, sessionClaims } = await auth();
+  if (!userId || sessionClaims?.metadata?.role !== "admin") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
   const { name, variantPrice } = await req.json();
   if (!name || !variantPrice) {
     return NextResponse.json(
@@ -24,11 +29,15 @@ export async function PUT(
   }
 }
 
-// DELETE: delete variant
+// DELETE: remove a variant
 export async function DELETE(
   _req: NextRequest,
   { params }: { params: { variantId: string } }
 ) {
+  const { userId, sessionClaims } = await auth();
+  if (!userId || sessionClaims?.metadata?.role !== "admin") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
   try {
     await prisma.variant.delete({ where: { id: params.variantId } });
     return NextResponse.json({ success: true });

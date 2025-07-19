@@ -12,13 +12,16 @@ export default clerkMiddleware(async (auth, req) => {
   }
   const role = sessionClaims?.metadata?.role as string;
   if (isAdminRoute(req) && role !== "admin") {
-    return NextResponse.redirect("/");
+    const url = new URL("/", req.url);
+    return NextResponse.redirect(url);
   }
   if (isTreasurerRoute(req) && !["admin", "treasurer"].includes(role)) {
-    return NextResponse.redirect("/");
+    const url = new URL("/", req.url);
+    return NextResponse.redirect(url);
   }
   if (isSalesRoute(req) && !["sales", "admin"].includes(role)) {
-    return NextResponse.redirect("/");
+    const url = new URL("/", req.url);
+    return NextResponse.redirect(url);
   }
 });
 
