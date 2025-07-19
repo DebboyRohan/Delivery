@@ -5,11 +5,13 @@ import { NextRequest, NextResponse } from "next/server";
 // GET: one product + its variants
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { productId: string } }
+  context: { params: Promise<{ productId: string }> }
 ) {
+  const { productId } = await context.params;
+
   try {
     const product = await prisma.product.findUnique({
-      where: { id: params.productId },
+      where: { id: productId },
       include: { Variant: true },
     });
     if (!product) {
@@ -30,8 +32,9 @@ export async function GET(
 // PUT: update a product, same rule (only price or variants, not both)
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { productId: string } }
+  context: { params: Promise<{ productId: string }> }
 ) {
+  const { productId } = await context.params;
   const { userId, sessionClaims } = await auth();
   if (!userId || sessionClaims?.metadata?.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -47,7 +50,7 @@ export async function PUT(
 
   // Enforce price/variant rule: only update price if product has no variants
   const existing = await prisma.product.findUnique({
-    where: { id: params.productId },
+    where: { id: productId },
     include: { Variant: true },
   });
   if (!existing) {
@@ -62,7 +65,7 @@ export async function PUT(
 
   try {
     const updated = await prisma.product.update({
-      where: { id: params.productId },
+      where: { id: productId },
       data: {
         name,
         price: existing.Variant.length ? null : price,
@@ -82,15 +85,16 @@ export async function PUT(
 // DELETE: only admin, deletes product and cascading variants
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { productId: string } }
+  context: { params: Promise<{ productId: string }> }
 ) {
+  const { productId } = await context.params;
   const { userId, sessionClaims } = await auth();
   if (!userId || sessionClaims?.metadata?.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
   try {
     await prisma.product.delete({
-      where: { id: params.productId },
+      where: { id: productId },
     });
     return NextResponse.json({ success: true });
   } catch (error) {
