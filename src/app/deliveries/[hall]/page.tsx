@@ -170,7 +170,7 @@ export default function DeliveriesHallPage() {
 
       {orders.length === 0 ? (
         <div className="text-center text-gray-500 py-12">
-          🎉 No pending deliveries for today in this hall!
+          <p>No pending deliveries for today in this hall!</p>
           <br />
           <span className="text-sm">All orders have been completed.</span>
         </div>
