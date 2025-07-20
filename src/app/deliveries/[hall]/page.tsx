@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-
-const DELIVERY_STATUSES = [
-  "PENDING",
-  "OUT_FOR_DELIVERY",
-  "DELIVERED",
-  "CANCELLED",
-  "NOT_AVAILABLE",
-] as const;
+import { DELIVERY_STATUSES } from "@/types/enums";
 
 function statusDisplay(s: string) {
   switch (s) {

@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { DeliveryStatus } from "@prisma/client";
-
-const allowedStatuses: DeliveryStatus[] = [
-  "PENDING",
-  "OUT_FOR_DELIVERY",
-  "DELIVERED",
-  "CANCELLED",
-  "NOT_AVAILABLE",
-];
+import {
+  DELIVERY_STATUSES,
+  isValidDeliveryStatus,
+  type DeliveryStatus,
+} from "@/types/enums";
 
 export async function PUT(request: NextRequest) {
   try {
@@ -23,10 +19,10 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    if (!allowedStatuses.includes(status as DeliveryStatus)) {
+    if (!isValidDeliveryStatus(status)) {
       return NextResponse.json(
         {
-          error: `Invalid status. Must be one of: ${allowedStatuses.join(
+          error: `Invalid status. Must be one of: ${DELIVERY_STATUSES.join(
             ", "
           )}`,
         },
@@ -47,61 +43,34 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    console.log(
-      "Found order item:",
-      orderItem.id,
-      "for order:",
-      orderItem.orderId
-    );
-
     // Update the order item status
     await prisma.orderItem.update({
       where: { id: orderItemId },
-      data: { deliveryStatus: status as DeliveryStatus },
+      data: { deliveryStatus: status },
     });
-
-    console.log("Updated order item status to:", status);
 
     // Get all order items for this order to check if all are delivered
     const allOrderItems = await prisma.orderItem.findMany({
       where: { orderId: orderItem.orderId },
     });
 
-    // Check if all items are now delivered (including the one we just updated)
-    const allItemsDelivered = allOrderItems.every(
-      (item) =>
-        item.id === orderItemId
-          ? status === "DELIVERED" // Use the new status for the current item
-          : item.deliveryStatus === "DELIVERED" // Use existing status for other items
+    // Check if all items are now delivered
+    const allItemsDelivered = allOrderItems.every((item) =>
+      item.id === orderItemId
+        ? status === "DELIVERED"
+        : item.deliveryStatus === "DELIVERED"
     );
 
-    console.log("All items delivered:", allItemsDelivered);
+    // Update order status accordingly
+    const newOrderStatus: DeliveryStatus = allItemsDelivered
+      ? "DELIVERED"
+      : "PENDING";
 
-    // Update order status based on item completion
-    let newOrderStatus: DeliveryStatus;
-
-    if (allItemsDelivered) {
-      newOrderStatus = "DELIVERED";
-    } else {
-      // If any item is not delivered, keep order as PENDING (or maintain current status if not DELIVERED)
-      newOrderStatus =
-        orderItem.Order.deliveryStatus === "DELIVERED"
-          ? "PENDING"
-          : orderItem.Order.deliveryStatus;
-    }
-
-    // Only update order status if it needs to change
     if (orderItem.Order.deliveryStatus !== newOrderStatus) {
       await prisma.order.update({
         where: { id: orderItem.orderId },
         data: { deliveryStatus: newOrderStatus },
       });
-      console.log(
-        "Updated order status from",
-        orderItem.Order.deliveryStatus,
-        "to",
-        newOrderStatus
-      );
     }
 
     return NextResponse.json({

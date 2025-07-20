@@ -1,13 +1,17 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import type { Hall, DeliveryStatus } from "@prisma/client";
+import { isValidHall } from "@/types/enums";
 
 export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ hall: string }> }
 ) {
-  // Await params before accessing properties
   const { hall } = await context.params;
+
+  // Validate hall parameter using helper function
+  if (!isValidHall(hall)) {
+    return NextResponse.json({ error: "Invalid hall" }, { status: 400 });
+  }
 
   const now = new Date();
   const todayStart = new Date(now);
@@ -18,23 +22,31 @@ export async function GET(
   try {
     const orders = await prisma.order.findMany({
       where: {
-        hall: hall as Hall,
+        hall: hall,
         deliveryDate: { gte: todayStart, lt: todayEnd },
+        OrderItem: {
+          some: {
+            deliveryStatus: "PENDING",
+          },
+        },
       },
       include: {
-        OrderItem: { include: { Product: true, Variant: true } },
+        OrderItem: {
+          where: {
+            deliveryStatus: "PENDING",
+          },
+          include: { Product: true, Variant: true },
+        },
         User: true,
       },
       orderBy: { deliveryDate: "asc" },
     });
 
-    // Calculate remaining amount: sum of (totalPrice - amountPaid) for undelivered items
+    // Calculate remaining amount: sum of (totalPrice - amountPaid) for PENDING items only
     let remainingAmount = 0;
     for (const order of orders) {
       for (const item of order.OrderItem) {
-        if (item.deliveryStatus !== "DELIVERED") {
-          remainingAmount += Number(item.totalPrice) - Number(item.amountPaid);
-        }
+        remainingAmount += Number(item.totalPrice) - Number(item.amountPaid);
       }
     }
 

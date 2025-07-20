@@ -1,24 +1,19 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { DeliveryStatus } from "@prisma/client";
-
-const allowedStatuses: DeliveryStatus[] = [
-  "PENDING",
-  "OUT_FOR_DELIVERY",
-  "DELIVERED",
-  "CANCELLED",
-  "NOT_AVAILABLE",
-];
+import {
+  DELIVERY_STATUSES,
+  isValidDeliveryStatus,
+  type DeliveryStatus,
+} from "@/types/enums";
 
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ orderId: string }> }
 ) {
-  // Await params before accessing properties
   const { orderId } = await context.params;
   const { status } = await req.json();
 
-  if (!allowedStatuses.includes(status as DeliveryStatus)) {
+  if (!isValidDeliveryStatus(status)) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
 
@@ -51,7 +46,7 @@ export async function PUT(
 
     await prisma.order.update({
       where: { id: orderId },
-      data: { deliveryStatus: status as DeliveryStatus },
+      data: { deliveryStatus: status },
     });
 
     return NextResponse.json({ success: true });

@@ -1,7 +1,11 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { FinanceExpenseType } from "@prisma/client";
+import {
+  FINANCE_EXPENSE_TYPES,
+  isValidFinanceExpenseType,
+  type FinanceExpenseType,
+} from "@/types/enums";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -13,8 +17,8 @@ export async function GET(req: NextRequest) {
   try {
     // Build where clause with proper type checking
     const where: any = {};
-    if (typeParam && (typeParam === "PURCHASE" || typeParam === "GENERAL")) {
-      where.type = typeParam as FinanceExpenseType;
+    if (typeParam && isValidFinanceExpenseType(typeParam)) {
+      where.type = typeParam;
     }
 
     const [expenses, total, summary] = await Promise.all([
@@ -80,9 +84,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate type enum
-    if (type !== "PURCHASE" && type !== "GENERAL") {
+    if (!isValidFinanceExpenseType(type)) {
       return NextResponse.json(
-        { error: "Type must be either PURCHASE or GENERAL" },
+        { error: `Type must be one of: ${FINANCE_EXPENSE_TYPES.join(", ")}` },
         { status: 400 }
       );
     }
