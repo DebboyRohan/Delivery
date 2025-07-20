@@ -19,6 +19,7 @@ const eslintConfig = [
       "@typescript-eslint/ban-ts-comment": "off",
       "@next/next/no-img-element": "off",
       "react-hooks/exhaustive-deps": "off",
+      "react/no-unescaped-entities": "off",
       // Add any other problematic rules here
     },
   },
