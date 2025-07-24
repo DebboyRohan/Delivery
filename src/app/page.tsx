@@ -36,11 +36,11 @@ const SECTIONS = [
 export default function HomePage() {
   const router = useRouter();
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-100 px-4 py-8">
+    <div className="flex flex-col items-center justify-start bg-neutral-100 px-4 pt-6">
       <h1 className="text-4xl font-extrabold mb-4 text-black text-center tracking-tight">
         Dashboard
       </h1>
-      <div className="max-w-4xl w-full grid grid-cols-1 sm:grid-cols-2 gap-7 mt-8">
+      <div className="max-w-4xl w-full grid grid-cols-1 sm:grid-cols-2 gap-7">
         {SECTIONS.map((sec) => (
           <button
             key={sec.key}
