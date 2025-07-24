@@ -31,13 +31,7 @@ export const HALLS = [
 ] as const;
 
 // Delivery status enum values
-export const DELIVERY_STATUSES = [
-  "PENDING",
-  "OUT_FOR_DELIVERY",
-  "DELIVERED",
-  "CANCELLED",
-  "NOT_AVAILABLE",
-] as const;
+export const DELIVERY_STATUSES = ["PENDING", "DELIVERED", "CANCELLED"] as const;
 
 // Finance expense type enum values
 export const FINANCE_EXPENSE_TYPES = ["PURCHASE", "GENERAL"] as const;

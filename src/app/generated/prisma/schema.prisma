@@ -121,8 +121,6 @@ enum Role {
 
 enum DeliveryStatus {
   PENDING
-  OUT_FOR_DELIVERY
-  NOT_AVAILABLE
   DELIVERED
   CANCELLED
 }

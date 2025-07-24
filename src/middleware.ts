@@ -1,7 +1,11 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-const isPublicRoute = createRouteMatcher(["/deliveries(.*)", "/sign-in(.*)"]);
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/deliveries(.*)",
+  "/sign-in(.*)",
+]);
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 const isTreasurerRoute = createRouteMatcher(["/treasurer(.*)"]);
 const isSalesRoute = createRouteMatcher(["/sales(.*)"]);

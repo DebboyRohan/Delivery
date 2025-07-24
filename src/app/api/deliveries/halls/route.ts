@@ -14,7 +14,7 @@ export async function GET() {
       OrderItem: {
         some: {
           deliveryStatus: {
-            in: ["PENDING", "OUT_FOR_DELIVERY", "NOT_AVAILABLE"],
+            in: ["PENDING"],
           },
         },
       },

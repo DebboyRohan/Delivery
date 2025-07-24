@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   if (tab === "delivered") where.deliveryStatus = "DELIVERED";
   if (tab === "undelivered")
     where.deliveryStatus = {
-      in: ["PENDING", "OUT_FOR_DELIVERY", "NOT_AVAILABLE"],
+      in: ["PENDING"],
     };
   if (tab === "cancelled") where.deliveryStatus = "CANCELLED";
   if (search.trim()) {

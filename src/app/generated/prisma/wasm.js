@@ -259,8 +259,6 @@ exports.Hall = exports.$Enums.Hall = {
 
 exports.DeliveryStatus = exports.$Enums.DeliveryStatus = {
   PENDING: 'PENDING',
-  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
-  NOT_AVAILABLE: 'NOT_AVAILABLE',
   DELIVERED: 'DELIVERED',
   CANCELLED: 'CANCELLED'
 };

@@ -8,14 +8,10 @@ function statusDisplay(s: string) {
   switch (s) {
     case "PENDING":
       return "Pending";
-    case "OUT_FOR_DELIVERY":
-      return "Out for Delivery";
     case "DELIVERED":
       return "Delivered";
     case "CANCELLED":
       return "Cancelled";
-    case "NOT_AVAILABLE":
-      return "Not Available";
     default:
       return s;
   }
@@ -37,20 +33,15 @@ export default function DeliveriesHallPage() {
   const [itemEditing, setItemEditing] = useState<{ [id: string]: string }>({});
   const [overallRemainingAmount, setOverallRemainingAmount] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [showQRModal, setShowQRModal] = useState(false);
 
   function fetchOrders() {
     setLoading(true);
     setError(null);
 
-    console.log("Fetching pending orders for hall:", hall);
-
     fetch(`/api/deliveries/${encodeURIComponent(hall)}`)
-      .then((r) => {
-        console.log("Fetch response status:", r.status);
-        return r.json();
-      })
+      .then((r) => r.json())
       .then((d) => {
-        console.log("Fetch response data:", d);
         if (d.error) {
           setError(d.error);
         } else {
@@ -60,7 +51,6 @@ export default function DeliveriesHallPage() {
         }
       })
       .catch((err) => {
-        console.error("Fetch error:", err);
         setError("Failed to load orders");
       })
       .finally(() => setLoading(false));
@@ -73,7 +63,6 @@ export default function DeliveriesHallPage() {
   }, [hall]);
 
   const onItemStatusSelect = (itemId: string, value: string) => {
-    console.log("Status selected for item:", itemId, "status:", value);
     setItemEditing((e) => ({ ...e, [itemId]: value }));
   };
 
@@ -81,18 +70,11 @@ export default function DeliveriesHallPage() {
     orderItemId: string,
     status: string
   ) => {
-    console.log("=== Frontend Update ===");
-    console.log("OrderItemId:", orderItemId);
-    console.log("Status:", status);
-
     setUpdatingItemId(orderItemId);
     setError(null);
 
     try {
-      const url = `/api/deliveries/update-item`;
-      console.log("Fetching URL:", url);
-
-      const response = await fetch(url, {
+      const response = await fetch(`/api/deliveries/update-item`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -100,36 +82,37 @@ export default function DeliveriesHallPage() {
         body: JSON.stringify({ orderItemId, status }),
       });
 
-      console.log("Response status:", response.status);
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("Parsed JSON:", result);
 
       if (result.success) {
-        console.log("Update successful!");
-        // Revalidate by fetching fresh data
         fetchOrders();
       } else {
         setError(result.error || "Update failed");
       }
     } catch (err) {
-      console.error("Network error:", err);
       setError(`Error: ${err instanceof Error ? err.message : "Unknown"}`);
     } finally {
       setUpdatingItemId(null);
     }
   };
 
+  const handleQRModalClose = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setShowQRModal(false);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto py-10">
-        <div className="text-center text-gray-600 py-12">
-          Loading pending orders...
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading deliveries...</p>
         </div>
       </div>
     );
@@ -137,12 +120,12 @@ export default function DeliveriesHallPage() {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto py-10">
-        <div className="text-center text-red-600 py-12">
-          <div className="font-bold">Error:</div>
-          <div className="mt-2">{error}</div>
-          <Button onClick={fetchOrders} className="mt-4">
-            Retry
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="text-center">
+          <div className="text-red-500 mb-4 text-lg font-medium">Error</div>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <Button onClick={fetchOrders} variant="outline">
+            Try Again
           </Button>
         </div>
       </div>
@@ -150,151 +133,249 @@ export default function DeliveriesHallPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-10">
-      <Button
-        variant="ghost"
-        className="mb-8"
-        onClick={() => router.push("/deliveries")}
-      >
-        ← Back
-      </Button>
-      <h2 className="text-2xl mb-2 font-bold text-black">
-        {decodeURIComponent(hall)} Hall - Pending Deliveries
-      </h2>
-      <div className="mb-8 text-md text-gray-700 font-semibold">
-        Total Pending Amount:{" "}
-        <span className="text-black text-lg">
-          ₹{asMoney(overallRemainingAmount)}
-        </span>
-      </div>
-
-      {orders.length === 0 ? (
-        <div className="text-center text-gray-500 py-12">
-          <p>No pending deliveries for today in this hall!</p>
-          <br />
-          <span className="text-sm">All orders have been completed.</span>
-        </div>
-      ) : (
-        <div className="space-y-8">
-          {orders.map((order) => {
-            // Calculate remaining amount for this order (only pending items)
-            const orderRemainingAmount =
-              order.OrderItem?.reduce((sum: number, item: any) => {
-                const itemRemaining =
-                  Number(item.totalPrice || 0) - Number(item.amountPaid || 0);
-                return sum + Math.max(0, itemRemaining);
-              }, 0) || 0;
-
-            return (
-              <div
-                key={order.id}
-                className="bg-white border border-gray-300 p-6 rounded-lg shadow flex flex-col gap-3"
+    <>
+      <div className="min-h-screen bg-gray-50 pb-20">
+        {/* Clean Header */}
+        <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
+          <div className="px-4 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push("/deliveries")}
+                className="p-2 hover:bg-gray-100"
               >
-                <div className="flex justify-between items-start gap-4">
-                  <div>
-                    <div className="font-bold text-lg">
-                      {order.userName}{" "}
-                      <span className="font-normal text-gray-500">
-                        ({order.phone})
-                      </span>
-                    </div>
-                    <div className="text-xs text-gray-600 mt-1">
-                      <b>Order Total:</b> ₹{asMoney(order.totalAmount || 0)}{" "}
-                      &nbsp;|&nbsp;<b>Total Paid:</b> ₹
-                      {asMoney(order.totalPaid || 0)} &nbsp;|&nbsp;
-                      <b>Pending Amount:</b> ₹{asMoney(orderRemainingAmount)}
-                      <br />
-                      <b>Date:</b> {order.deliveryDate?.slice(0, 10)}{" "}
-                      &nbsp;|&nbsp;<b>Order Status:</b>{" "}
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-bold ${
-                          order.deliveryStatus === "DELIVERED"
-                            ? "bg-green-100 text-green-800"
-                            : order.deliveryStatus === "PENDING"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : order.deliveryStatus === "OUT_FOR_DELIVERY"
-                            ? "bg-blue-100 text-blue-800"
-                            : order.deliveryStatus === "CANCELLED"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {statusDisplay(order.deliveryStatus)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                ← Back
+              </Button>
+            </div>
 
-                <div className="mt-4">
-                  <h4 className="font-semibold text-gray-800 mb-3">
-                    Pending Items: ({order.OrderItem?.length || 0})
-                  </h4>
-                  <div className="flex flex-col gap-3">
-                    {order.OrderItem?.map((oi: any) => {
-                      const editStatus =
-                        itemEditing[oi.id] ?? oi.deliveryStatus;
-                      const itemRemaining = Math.max(
-                        0,
-                        Number(oi.totalPrice || 0) - Number(oi.amountPaid || 0)
-                      );
+            <h1 className="text-xl font-semibold text-gray-900 mb-1">
+              {decodeURIComponent(hall)}
+            </h1>
 
-                      return (
-                        <div
-                          key={oi.id}
-                          className="flex gap-3 items-center border-l-4 border-yellow-400 pl-4 py-2 bg-yellow-50"
+            {/* Hall Remaining Amount */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-500">Pending Amount</span>
+              <span className="text-lg font-bold text-red-600">
+                ₹{asMoney(overallRemainingAmount)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Orders List */}
+        <div className="px-4 py-4">
+          {orders.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="text-gray-400 mb-2">✓</div>
+              <p className="text-gray-500">No pending deliveries</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {orders.map((order) => {
+                const orderRemainingAmount =
+                  order.OrderItem?.reduce((sum: number, item: any) => {
+                    const itemRemaining =
+                      Number(item.totalPrice || 0) -
+                      Number(item.amountPaid || 0);
+                    return sum + Math.max(0, itemRemaining);
+                  }, 0) || 0;
+
+                return (
+                  <div
+                    key={order.id}
+                    className="bg-white rounded-lg border border-gray-100 overflow-hidden"
+                  >
+                    {/* Customer Header */}
+                    <div className="px-4 py-3 border-b border-gray-50">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-medium text-gray-900">
+                            {order.userName}
+                          </h3>
+                          <p className="text-sm text-gray-500">{order.phone}</p>
+                        </div>
+
+                        {/* Order Remaining Amount */}
+                        <div className="text-right">
+                          <div className="text-sm text-gray-500">Pending</div>
+                          <div className="text-lg font-semibold text-red-600">
+                            ₹{asMoney(orderRemainingAmount)}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Order Status & Date */}
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="text-xs text-gray-500">
+                          {order.deliveryDate?.slice(0, 10)}
+                        </span>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            order.deliveryStatus === "DELIVERED"
+                              ? "bg-green-100 text-green-700"
+                              : order.deliveryStatus === "PENDING"
+                              ? "bg-amber-100 text-amber-700"
+                              : order.deliveryStatus === "CANCELLED"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
                         >
-                          <div className="flex-1">
-                            <div className="font-medium">
-                              {oi.Product?.name || "Unknown Product"}
-                              {oi.Variant && <> / {oi.Variant.name}</>}
+                          {statusDisplay(order.deliveryStatus)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Items List */}
+                    <div className="divide-y divide-gray-50">
+                      {order.OrderItem?.map((oi: any) => {
+                        const editStatus =
+                          itemEditing[oi.id] ?? oi.deliveryStatus;
+                        const itemRemaining = Math.max(
+                          0,
+                          Number(oi.totalPrice || 0) -
+                            Number(oi.amountPaid || 0)
+                        );
+
+                        return (
+                          <div key={oi.id} className="p-4">
+                            {/* Product Info */}
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-gray-900 text-sm">
+                                  {oi.Product?.name || "Unknown Product"}
+                                  {oi.Variant && (
+                                    <span className="text-gray-500">
+                                      {" "}
+                                      / {oi.Variant.name}
+                                    </span>
+                                  )}
+                                </h4>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Qty: {oi.quantity}
+                                </p>
+                              </div>
+
+                              {/* Item Remaining Amount */}
+                              <div className="text-right ml-4">
+                                <span className="text-sm font-semibold text-red-600">
+                                  ₹{asMoney(itemRemaining)}
+                                </span>
+                              </div>
                             </div>
-                            <div className="text-xs text-gray-500">
-                              Qty: {oi.quantity} × ₹
-                              {asMoney(Number(oi.unitPrice || 0))} = ₹
-                              {asMoney(oi.totalPrice || 0)} | Paid: ₹
-                              {asMoney(oi.amountPaid || 0)} |{" "}
-                              <span className="font-semibold text-purple-700">
-                                Remaining: ₹{asMoney(itemRemaining)}
-                              </span>
+
+                            {/* Status Update Controls */}
+                            <div className="space-y-2">
+                              <select
+                                value={editStatus}
+                                onChange={(e) =>
+                                  onItemStatusSelect(oi.id, e.target.value)
+                                }
+                                disabled={updatingItemId === oi.id}
+                                className="w-full p-2.5 text-sm border border-gray-200 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              >
+                                {DELIVERY_STATUSES.map((s) => (
+                                  <option key={s} value={s}>
+                                    {statusDisplay(s)}
+                                  </option>
+                                ))}
+                              </select>
+
+                              <Button
+                                onClick={() =>
+                                  handleItemStatusUpdate(oi.id, editStatus)
+                                }
+                                disabled={updatingItemId === oi.id}
+                                className="w-full h-10 bg-gray-900 hover:bg-black text-white font-medium"
+                              >
+                                {updatingItemId === oi.id
+                                  ? "Updating..."
+                                  : "Update"}
+                              </Button>
                             </div>
                           </div>
-
-                          <select
-                            value={editStatus}
-                            onChange={(e) =>
-                              onItemStatusSelect(oi.id, e.target.value)
-                            }
-                            disabled={updatingItemId === oi.id}
-                            className="p-2 border rounded bg-white text-black font-semibold min-w-[140px]"
-                          >
-                            {DELIVERY_STATUSES.map((s) => (
-                              <option key={s} value={s}>
-                                {statusDisplay(s)}
-                              </option>
-                            ))}
-                          </select>
-
-                          <Button
-                            onClick={() =>
-                              handleItemStatusUpdate(oi.id, editStatus)
-                            }
-                            disabled={updatingItemId === oi.id}
-                            className="px-4 py-2 bg-black text-white"
-                          >
-                            {updatingItemId === oi.id
-                              ? "Updating..."
-                              : "Update"}
-                          </Button>
-                        </div>
-                      );
-                    }) || []}
+                        );
+                      }) || []}
+                    </div>
                   </div>
-                </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Floating QR Button */}
+      <button
+        onClick={() => setShowQRModal(true)}
+        className="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center z-50 transition-all duration-200 active:scale-95"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="3"
+            y="3"
+            width="8"
+            height="8"
+            rx="1"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <rect
+            x="13"
+            y="3"
+            width="8"
+            height="8"
+            rx="1"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <rect
+            x="3"
+            y="13"
+            width="8"
+            height="8"
+            rx="1"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <rect x="5" y="5" width="4" height="4" fill="currentColor" />
+          <rect x="15" y="5" width="4" height="4" fill="currentColor" />
+          <rect x="5" y="15" width="4" height="4" fill="currentColor" />
+          <rect x="13" y="13" width="3" height="3" fill="currentColor" />
+          <rect x="17" y="13" width="4" height="4" fill="currentColor" />
+          <rect x="13" y="17" width="8" height="4" fill="currentColor" />
+        </svg>
+      </button>
+
+      {/* QR Modal */}
+      {showQRModal && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={handleQRModalClose}
+        >
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+            <div className="text-center">
+              <h3 className="text-lg font-medium mb-4 text-gray-900">
+                QR Code
+              </h3>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <img
+                  src="/deliveryQR.png"
+                  alt="QR Code"
+                  className="w-full h-auto max-w-64 mx-auto"
+                />
               </div>
-            );
-          })}
+              <p className="text-sm text-gray-500 mt-4">Tap outside to close</p>
+            </div>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -65,8 +65,6 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export const DeliveryStatus: {
   PENDING: 'PENDING',
-  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
-  NOT_AVAILABLE: 'NOT_AVAILABLE',
   DELIVERED: 'DELIVERED',
   CANCELLED: 'CANCELLED'
 };

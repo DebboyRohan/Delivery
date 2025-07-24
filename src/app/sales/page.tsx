@@ -271,10 +271,8 @@ export default function OrdersPage() {
 function OrderStatusBadge({ status }: { status: string }) {
   const map = {
     PENDING: "bg-yellow-100 text-yellow-800",
-    OUT_FOR_DELIVERY: "bg-blue-100 text-blue-800",
     DELIVERED: "bg-green-100 text-green-800",
     CANCELLED: "bg-red-100 text-red-800",
-    NOT_AVAILABLE: "bg-gray-100 text-gray-800",
   };
   return (
     <span
