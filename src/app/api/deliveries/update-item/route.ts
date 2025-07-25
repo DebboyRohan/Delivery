@@ -5,6 +5,7 @@ import {
   isValidDeliveryStatus,
   type DeliveryStatus,
 } from "@/types/enums";
+import { handleOrderItemStatusChange } from "@/lib/inventory-helpers";
 
 export async function PUT(request: NextRequest) {
   try {
@@ -43,11 +44,22 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    const oldStatus = orderItem.deliveryStatus;
+
     // Update the order item status
     await prisma.orderItem.update({
       where: { id: orderItemId },
       data: { deliveryStatus: status },
     });
+
+    // Handle inventory changes based on status change
+    await handleOrderItemStatusChange(
+      orderItem.productId,
+      orderItem.variantId,
+      orderItem.quantity,
+      oldStatus,
+      status
+    );
 
     // Get all order items for this order to check if all are delivered
     const allOrderItems = await prisma.orderItem.findMany({

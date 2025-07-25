@@ -154,6 +154,15 @@ exports.Prisma.InventoryScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RemainingInventoryScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  variantId: 'variantId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
   userName: 'userName',
@@ -267,6 +276,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   FinanceExpense: 'FinanceExpense',
   Inventory: 'Inventory',
+  RemainingInventory: 'RemainingInventory',
   Order: 'Order',
   OrderItem: 'OrderItem',
   Product: 'Product',

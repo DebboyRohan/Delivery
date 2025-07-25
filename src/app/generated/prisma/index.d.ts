@@ -29,6 +29,11 @@ export type FinanceExpense = $Result.DefaultSelection<Prisma.$FinanceExpensePayl
  */
 export type Inventory = $Result.DefaultSelection<Prisma.$InventoryPayload>
 /**
+ * Model RemainingInventory
+ * 
+ */
+export type RemainingInventory = $Result.DefaultSelection<Prisma.$RemainingInventoryPayload>
+/**
  * Model Order
  * 
  */
@@ -285,6 +290,16 @@ export class PrismaClient<
     * ```
     */
   get inventory(): Prisma.InventoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.remainingInventory`: Exposes CRUD operations for the **RemainingInventory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RemainingInventories
+    * const remainingInventories = await prisma.remainingInventory.findMany()
+    * ```
+    */
+  get remainingInventory(): Prisma.RemainingInventoryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.order`: Exposes CRUD operations for the **Order** model.
@@ -768,6 +783,7 @@ export namespace Prisma {
     User: 'User',
     FinanceExpense: 'FinanceExpense',
     Inventory: 'Inventory',
+    RemainingInventory: 'RemainingInventory',
     Order: 'Order',
     OrderItem: 'OrderItem',
     Product: 'Product',
@@ -790,7 +806,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "financeExpense" | "inventory" | "order" | "orderItem" | "product" | "variant"
+      modelProps: "user" | "financeExpense" | "inventory" | "remainingInventory" | "order" | "orderItem" | "product" | "variant"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1013,6 +1029,80 @@ export namespace Prisma {
           count: {
             args: Prisma.InventoryCountArgs<ExtArgs>
             result: $Utils.Optional<InventoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      RemainingInventory: {
+        payload: Prisma.$RemainingInventoryPayload<ExtArgs>
+        fields: Prisma.RemainingInventoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RemainingInventoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RemainingInventoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>
+          }
+          findFirst: {
+            args: Prisma.RemainingInventoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RemainingInventoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>
+          }
+          findMany: {
+            args: Prisma.RemainingInventoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>[]
+          }
+          create: {
+            args: Prisma.RemainingInventoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>
+          }
+          createMany: {
+            args: Prisma.RemainingInventoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RemainingInventoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>[]
+          }
+          delete: {
+            args: Prisma.RemainingInventoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>
+          }
+          update: {
+            args: Prisma.RemainingInventoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.RemainingInventoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RemainingInventoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RemainingInventoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.RemainingInventoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RemainingInventoryPayload>
+          }
+          aggregate: {
+            args: Prisma.RemainingInventoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRemainingInventory>
+          }
+          groupBy: {
+            args: Prisma.RemainingInventoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RemainingInventoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RemainingInventoryCountArgs<ExtArgs>
+            result: $Utils.Optional<RemainingInventoryCountAggregateOutputType> | number
           }
         }
       }
@@ -1399,6 +1489,7 @@ export namespace Prisma {
     user?: UserOmit
     financeExpense?: FinanceExpenseOmit
     inventory?: InventoryOmit
+    remainingInventory?: RemainingInventoryOmit
     order?: OrderOmit
     orderItem?: OrderItemOmit
     product?: ProductOmit
@@ -1581,6 +1672,7 @@ export namespace Prisma {
     Inventory: number
     OrderItem: number
     Variant: number
+    RemainingInventory: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1588,6 +1680,7 @@ export namespace Prisma {
     Inventory?: boolean | ProductCountOutputTypeCountInventoryArgs
     OrderItem?: boolean | ProductCountOutputTypeCountOrderItemArgs
     Variant?: boolean | ProductCountOutputTypeCountVariantArgs
+    RemainingInventory?: boolean | ProductCountOutputTypeCountRemainingInventoryArgs
   }
 
   // Custom InputTypes
@@ -1629,6 +1722,13 @@ export namespace Prisma {
     where?: VariantWhereInput
   }
 
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountRemainingInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RemainingInventoryWhereInput
+  }
+
 
   /**
    * Count Type VariantCountOutputType
@@ -1638,12 +1738,14 @@ export namespace Prisma {
     FinanceExpense: number
     Inventory: number
     OrderItem: number
+    RemainingInventory: number
   }
 
   export type VariantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     FinanceExpense?: boolean | VariantCountOutputTypeCountFinanceExpenseArgs
     Inventory?: boolean | VariantCountOutputTypeCountInventoryArgs
     OrderItem?: boolean | VariantCountOutputTypeCountOrderItemArgs
+    RemainingInventory?: boolean | VariantCountOutputTypeCountRemainingInventoryArgs
   }
 
   // Custom InputTypes
@@ -1676,6 +1778,13 @@ export namespace Prisma {
    */
   export type VariantCountOutputTypeCountOrderItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
+  }
+
+  /**
+   * VariantCountOutputType without action
+   */
+  export type VariantCountOutputTypeCountRemainingInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RemainingInventoryWhereInput
   }
 
 
@@ -5221,6 +5330,1138 @@ export namespace Prisma {
 
 
   /**
+   * Model RemainingInventory
+   */
+
+  export type AggregateRemainingInventory = {
+    _count: RemainingInventoryCountAggregateOutputType | null
+    _avg: RemainingInventoryAvgAggregateOutputType | null
+    _sum: RemainingInventorySumAggregateOutputType | null
+    _min: RemainingInventoryMinAggregateOutputType | null
+    _max: RemainingInventoryMaxAggregateOutputType | null
+  }
+
+  export type RemainingInventoryAvgAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type RemainingInventorySumAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type RemainingInventoryMinAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    variantId: string | null
+    quantity: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RemainingInventoryMaxAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    variantId: string | null
+    quantity: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RemainingInventoryCountAggregateOutputType = {
+    id: number
+    productId: number
+    variantId: number
+    quantity: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RemainingInventoryAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type RemainingInventorySumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type RemainingInventoryMinAggregateInputType = {
+    id?: true
+    productId?: true
+    variantId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RemainingInventoryMaxAggregateInputType = {
+    id?: true
+    productId?: true
+    variantId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RemainingInventoryCountAggregateInputType = {
+    id?: true
+    productId?: true
+    variantId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RemainingInventoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RemainingInventory to aggregate.
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemainingInventories to fetch.
+     */
+    orderBy?: RemainingInventoryOrderByWithRelationInput | RemainingInventoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RemainingInventoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemainingInventories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemainingInventories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RemainingInventories
+    **/
+    _count?: true | RemainingInventoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RemainingInventoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RemainingInventorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RemainingInventoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RemainingInventoryMaxAggregateInputType
+  }
+
+  export type GetRemainingInventoryAggregateType<T extends RemainingInventoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateRemainingInventory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRemainingInventory[P]>
+      : GetScalarType<T[P], AggregateRemainingInventory[P]>
+  }
+
+
+
+
+  export type RemainingInventoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RemainingInventoryWhereInput
+    orderBy?: RemainingInventoryOrderByWithAggregationInput | RemainingInventoryOrderByWithAggregationInput[]
+    by: RemainingInventoryScalarFieldEnum[] | RemainingInventoryScalarFieldEnum
+    having?: RemainingInventoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RemainingInventoryCountAggregateInputType | true
+    _avg?: RemainingInventoryAvgAggregateInputType
+    _sum?: RemainingInventorySumAggregateInputType
+    _min?: RemainingInventoryMinAggregateInputType
+    _max?: RemainingInventoryMaxAggregateInputType
+  }
+
+  export type RemainingInventoryGroupByOutputType = {
+    id: string
+    productId: string
+    variantId: string | null
+    quantity: number
+    createdAt: Date
+    updatedAt: Date
+    _count: RemainingInventoryCountAggregateOutputType | null
+    _avg: RemainingInventoryAvgAggregateOutputType | null
+    _sum: RemainingInventorySumAggregateOutputType | null
+    _min: RemainingInventoryMinAggregateOutputType | null
+    _max: RemainingInventoryMaxAggregateOutputType | null
+  }
+
+  type GetRemainingInventoryGroupByPayload<T extends RemainingInventoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RemainingInventoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RemainingInventoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RemainingInventoryGroupByOutputType[P]>
+            : GetScalarType<T[P], RemainingInventoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RemainingInventorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    variantId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    Product?: boolean | ProductDefaultArgs<ExtArgs>
+    Variant?: boolean | RemainingInventory$VariantArgs<ExtArgs>
+  }, ExtArgs["result"]["remainingInventory"]>
+
+  export type RemainingInventorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    variantId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    Product?: boolean | ProductDefaultArgs<ExtArgs>
+    Variant?: boolean | RemainingInventory$VariantArgs<ExtArgs>
+  }, ExtArgs["result"]["remainingInventory"]>
+
+  export type RemainingInventorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    variantId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    Product?: boolean | ProductDefaultArgs<ExtArgs>
+    Variant?: boolean | RemainingInventory$VariantArgs<ExtArgs>
+  }, ExtArgs["result"]["remainingInventory"]>
+
+  export type RemainingInventorySelectScalar = {
+    id?: boolean
+    productId?: boolean
+    variantId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RemainingInventoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "variantId" | "quantity" | "createdAt" | "updatedAt", ExtArgs["result"]["remainingInventory"]>
+  export type RemainingInventoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Product?: boolean | ProductDefaultArgs<ExtArgs>
+    Variant?: boolean | RemainingInventory$VariantArgs<ExtArgs>
+  }
+  export type RemainingInventoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Product?: boolean | ProductDefaultArgs<ExtArgs>
+    Variant?: boolean | RemainingInventory$VariantArgs<ExtArgs>
+  }
+  export type RemainingInventoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Product?: boolean | ProductDefaultArgs<ExtArgs>
+    Variant?: boolean | RemainingInventory$VariantArgs<ExtArgs>
+  }
+
+  export type $RemainingInventoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RemainingInventory"
+    objects: {
+      Product: Prisma.$ProductPayload<ExtArgs>
+      Variant: Prisma.$VariantPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      productId: string
+      variantId: string | null
+      quantity: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["remainingInventory"]>
+    composites: {}
+  }
+
+  type RemainingInventoryGetPayload<S extends boolean | null | undefined | RemainingInventoryDefaultArgs> = $Result.GetResult<Prisma.$RemainingInventoryPayload, S>
+
+  type RemainingInventoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RemainingInventoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RemainingInventoryCountAggregateInputType | true
+    }
+
+  export interface RemainingInventoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RemainingInventory'], meta: { name: 'RemainingInventory' } }
+    /**
+     * Find zero or one RemainingInventory that matches the filter.
+     * @param {RemainingInventoryFindUniqueArgs} args - Arguments to find a RemainingInventory
+     * @example
+     * // Get one RemainingInventory
+     * const remainingInventory = await prisma.remainingInventory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RemainingInventoryFindUniqueArgs>(args: SelectSubset<T, RemainingInventoryFindUniqueArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RemainingInventory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RemainingInventoryFindUniqueOrThrowArgs} args - Arguments to find a RemainingInventory
+     * @example
+     * // Get one RemainingInventory
+     * const remainingInventory = await prisma.remainingInventory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RemainingInventoryFindUniqueOrThrowArgs>(args: SelectSubset<T, RemainingInventoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RemainingInventory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryFindFirstArgs} args - Arguments to find a RemainingInventory
+     * @example
+     * // Get one RemainingInventory
+     * const remainingInventory = await prisma.remainingInventory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RemainingInventoryFindFirstArgs>(args?: SelectSubset<T, RemainingInventoryFindFirstArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RemainingInventory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryFindFirstOrThrowArgs} args - Arguments to find a RemainingInventory
+     * @example
+     * // Get one RemainingInventory
+     * const remainingInventory = await prisma.remainingInventory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RemainingInventoryFindFirstOrThrowArgs>(args?: SelectSubset<T, RemainingInventoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RemainingInventories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RemainingInventories
+     * const remainingInventories = await prisma.remainingInventory.findMany()
+     * 
+     * // Get first 10 RemainingInventories
+     * const remainingInventories = await prisma.remainingInventory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const remainingInventoryWithIdOnly = await prisma.remainingInventory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RemainingInventoryFindManyArgs>(args?: SelectSubset<T, RemainingInventoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RemainingInventory.
+     * @param {RemainingInventoryCreateArgs} args - Arguments to create a RemainingInventory.
+     * @example
+     * // Create one RemainingInventory
+     * const RemainingInventory = await prisma.remainingInventory.create({
+     *   data: {
+     *     // ... data to create a RemainingInventory
+     *   }
+     * })
+     * 
+     */
+    create<T extends RemainingInventoryCreateArgs>(args: SelectSubset<T, RemainingInventoryCreateArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RemainingInventories.
+     * @param {RemainingInventoryCreateManyArgs} args - Arguments to create many RemainingInventories.
+     * @example
+     * // Create many RemainingInventories
+     * const remainingInventory = await prisma.remainingInventory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RemainingInventoryCreateManyArgs>(args?: SelectSubset<T, RemainingInventoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RemainingInventories and returns the data saved in the database.
+     * @param {RemainingInventoryCreateManyAndReturnArgs} args - Arguments to create many RemainingInventories.
+     * @example
+     * // Create many RemainingInventories
+     * const remainingInventory = await prisma.remainingInventory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RemainingInventories and only return the `id`
+     * const remainingInventoryWithIdOnly = await prisma.remainingInventory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RemainingInventoryCreateManyAndReturnArgs>(args?: SelectSubset<T, RemainingInventoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RemainingInventory.
+     * @param {RemainingInventoryDeleteArgs} args - Arguments to delete one RemainingInventory.
+     * @example
+     * // Delete one RemainingInventory
+     * const RemainingInventory = await prisma.remainingInventory.delete({
+     *   where: {
+     *     // ... filter to delete one RemainingInventory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RemainingInventoryDeleteArgs>(args: SelectSubset<T, RemainingInventoryDeleteArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RemainingInventory.
+     * @param {RemainingInventoryUpdateArgs} args - Arguments to update one RemainingInventory.
+     * @example
+     * // Update one RemainingInventory
+     * const remainingInventory = await prisma.remainingInventory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RemainingInventoryUpdateArgs>(args: SelectSubset<T, RemainingInventoryUpdateArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RemainingInventories.
+     * @param {RemainingInventoryDeleteManyArgs} args - Arguments to filter RemainingInventories to delete.
+     * @example
+     * // Delete a few RemainingInventories
+     * const { count } = await prisma.remainingInventory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RemainingInventoryDeleteManyArgs>(args?: SelectSubset<T, RemainingInventoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RemainingInventories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RemainingInventories
+     * const remainingInventory = await prisma.remainingInventory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RemainingInventoryUpdateManyArgs>(args: SelectSubset<T, RemainingInventoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RemainingInventories and returns the data updated in the database.
+     * @param {RemainingInventoryUpdateManyAndReturnArgs} args - Arguments to update many RemainingInventories.
+     * @example
+     * // Update many RemainingInventories
+     * const remainingInventory = await prisma.remainingInventory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RemainingInventories and only return the `id`
+     * const remainingInventoryWithIdOnly = await prisma.remainingInventory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RemainingInventoryUpdateManyAndReturnArgs>(args: SelectSubset<T, RemainingInventoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RemainingInventory.
+     * @param {RemainingInventoryUpsertArgs} args - Arguments to update or create a RemainingInventory.
+     * @example
+     * // Update or create a RemainingInventory
+     * const remainingInventory = await prisma.remainingInventory.upsert({
+     *   create: {
+     *     // ... data to create a RemainingInventory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RemainingInventory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RemainingInventoryUpsertArgs>(args: SelectSubset<T, RemainingInventoryUpsertArgs<ExtArgs>>): Prisma__RemainingInventoryClient<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RemainingInventories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryCountArgs} args - Arguments to filter RemainingInventories to count.
+     * @example
+     * // Count the number of RemainingInventories
+     * const count = await prisma.remainingInventory.count({
+     *   where: {
+     *     // ... the filter for the RemainingInventories we want to count
+     *   }
+     * })
+    **/
+    count<T extends RemainingInventoryCountArgs>(
+      args?: Subset<T, RemainingInventoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RemainingInventoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RemainingInventory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RemainingInventoryAggregateArgs>(args: Subset<T, RemainingInventoryAggregateArgs>): Prisma.PrismaPromise<GetRemainingInventoryAggregateType<T>>
+
+    /**
+     * Group by RemainingInventory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RemainingInventoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RemainingInventoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RemainingInventoryGroupByArgs['orderBy'] }
+        : { orderBy?: RemainingInventoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RemainingInventoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRemainingInventoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RemainingInventory model
+   */
+  readonly fields: RemainingInventoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RemainingInventory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RemainingInventoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Variant<T extends RemainingInventory$VariantArgs<ExtArgs> = {}>(args?: Subset<T, RemainingInventory$VariantArgs<ExtArgs>>): Prisma__VariantClient<$Result.GetResult<Prisma.$VariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RemainingInventory model
+   */
+  interface RemainingInventoryFieldRefs {
+    readonly id: FieldRef<"RemainingInventory", 'String'>
+    readonly productId: FieldRef<"RemainingInventory", 'String'>
+    readonly variantId: FieldRef<"RemainingInventory", 'String'>
+    readonly quantity: FieldRef<"RemainingInventory", 'Int'>
+    readonly createdAt: FieldRef<"RemainingInventory", 'DateTime'>
+    readonly updatedAt: FieldRef<"RemainingInventory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RemainingInventory findUnique
+   */
+  export type RemainingInventoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RemainingInventory to fetch.
+     */
+    where: RemainingInventoryWhereUniqueInput
+  }
+
+  /**
+   * RemainingInventory findUniqueOrThrow
+   */
+  export type RemainingInventoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RemainingInventory to fetch.
+     */
+    where: RemainingInventoryWhereUniqueInput
+  }
+
+  /**
+   * RemainingInventory findFirst
+   */
+  export type RemainingInventoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RemainingInventory to fetch.
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemainingInventories to fetch.
+     */
+    orderBy?: RemainingInventoryOrderByWithRelationInput | RemainingInventoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RemainingInventories.
+     */
+    cursor?: RemainingInventoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemainingInventories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemainingInventories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RemainingInventories.
+     */
+    distinct?: RemainingInventoryScalarFieldEnum | RemainingInventoryScalarFieldEnum[]
+  }
+
+  /**
+   * RemainingInventory findFirstOrThrow
+   */
+  export type RemainingInventoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RemainingInventory to fetch.
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemainingInventories to fetch.
+     */
+    orderBy?: RemainingInventoryOrderByWithRelationInput | RemainingInventoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RemainingInventories.
+     */
+    cursor?: RemainingInventoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemainingInventories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemainingInventories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RemainingInventories.
+     */
+    distinct?: RemainingInventoryScalarFieldEnum | RemainingInventoryScalarFieldEnum[]
+  }
+
+  /**
+   * RemainingInventory findMany
+   */
+  export type RemainingInventoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RemainingInventories to fetch.
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RemainingInventories to fetch.
+     */
+    orderBy?: RemainingInventoryOrderByWithRelationInput | RemainingInventoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RemainingInventories.
+     */
+    cursor?: RemainingInventoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RemainingInventories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RemainingInventories.
+     */
+    skip?: number
+    distinct?: RemainingInventoryScalarFieldEnum | RemainingInventoryScalarFieldEnum[]
+  }
+
+  /**
+   * RemainingInventory create
+   */
+  export type RemainingInventoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RemainingInventory.
+     */
+    data: XOR<RemainingInventoryCreateInput, RemainingInventoryUncheckedCreateInput>
+  }
+
+  /**
+   * RemainingInventory createMany
+   */
+  export type RemainingInventoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RemainingInventories.
+     */
+    data: RemainingInventoryCreateManyInput | RemainingInventoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RemainingInventory createManyAndReturn
+   */
+  export type RemainingInventoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many RemainingInventories.
+     */
+    data: RemainingInventoryCreateManyInput | RemainingInventoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RemainingInventory update
+   */
+  export type RemainingInventoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RemainingInventory.
+     */
+    data: XOR<RemainingInventoryUpdateInput, RemainingInventoryUncheckedUpdateInput>
+    /**
+     * Choose, which RemainingInventory to update.
+     */
+    where: RemainingInventoryWhereUniqueInput
+  }
+
+  /**
+   * RemainingInventory updateMany
+   */
+  export type RemainingInventoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RemainingInventories.
+     */
+    data: XOR<RemainingInventoryUpdateManyMutationInput, RemainingInventoryUncheckedUpdateManyInput>
+    /**
+     * Filter which RemainingInventories to update
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * Limit how many RemainingInventories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RemainingInventory updateManyAndReturn
+   */
+  export type RemainingInventoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * The data used to update RemainingInventories.
+     */
+    data: XOR<RemainingInventoryUpdateManyMutationInput, RemainingInventoryUncheckedUpdateManyInput>
+    /**
+     * Filter which RemainingInventories to update
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * Limit how many RemainingInventories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RemainingInventory upsert
+   */
+  export type RemainingInventoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RemainingInventory to update in case it exists.
+     */
+    where: RemainingInventoryWhereUniqueInput
+    /**
+     * In case the RemainingInventory found by the `where` argument doesn't exist, create a new RemainingInventory with this data.
+     */
+    create: XOR<RemainingInventoryCreateInput, RemainingInventoryUncheckedCreateInput>
+    /**
+     * In case the RemainingInventory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RemainingInventoryUpdateInput, RemainingInventoryUncheckedUpdateInput>
+  }
+
+  /**
+   * RemainingInventory delete
+   */
+  export type RemainingInventoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    /**
+     * Filter which RemainingInventory to delete.
+     */
+    where: RemainingInventoryWhereUniqueInput
+  }
+
+  /**
+   * RemainingInventory deleteMany
+   */
+  export type RemainingInventoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RemainingInventories to delete
+     */
+    where?: RemainingInventoryWhereInput
+    /**
+     * Limit how many RemainingInventories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RemainingInventory.Variant
+   */
+  export type RemainingInventory$VariantArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Variant
+     */
+    select?: VariantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Variant
+     */
+    omit?: VariantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VariantInclude<ExtArgs> | null
+    where?: VariantWhereInput
+  }
+
+  /**
+   * RemainingInventory without action
+   */
+  export type RemainingInventoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Order
    */
 
@@ -7890,6 +9131,7 @@ export namespace Prisma {
     Inventory?: boolean | Product$InventoryArgs<ExtArgs>
     OrderItem?: boolean | Product$OrderItemArgs<ExtArgs>
     Variant?: boolean | Product$VariantArgs<ExtArgs>
+    RemainingInventory?: boolean | Product$RemainingInventoryArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -7923,6 +9165,7 @@ export namespace Prisma {
     Inventory?: boolean | Product$InventoryArgs<ExtArgs>
     OrderItem?: boolean | Product$OrderItemArgs<ExtArgs>
     Variant?: boolean | Product$VariantArgs<ExtArgs>
+    RemainingInventory?: boolean | Product$RemainingInventoryArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7935,6 +9178,7 @@ export namespace Prisma {
       Inventory: Prisma.$InventoryPayload<ExtArgs>[]
       OrderItem: Prisma.$OrderItemPayload<ExtArgs>[]
       Variant: Prisma.$VariantPayload<ExtArgs>[]
+      RemainingInventory: Prisma.$RemainingInventoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8340,6 +9584,7 @@ export namespace Prisma {
     Inventory<T extends Product$InventoryArgs<ExtArgs> = {}>(args?: Subset<T, Product$InventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     OrderItem<T extends Product$OrderItemArgs<ExtArgs> = {}>(args?: Subset<T, Product$OrderItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Variant<T extends Product$VariantArgs<ExtArgs> = {}>(args?: Subset<T, Product$VariantArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    RemainingInventory<T extends Product$RemainingInventoryArgs<ExtArgs> = {}>(args?: Subset<T, Product$RemainingInventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8858,6 +10103,30 @@ export namespace Prisma {
   }
 
   /**
+   * Product.RemainingInventory
+   */
+  export type Product$RemainingInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    where?: RemainingInventoryWhereInput
+    orderBy?: RemainingInventoryOrderByWithRelationInput | RemainingInventoryOrderByWithRelationInput[]
+    cursor?: RemainingInventoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RemainingInventoryScalarFieldEnum | RemainingInventoryScalarFieldEnum[]
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9070,6 +10339,7 @@ export namespace Prisma {
     Inventory?: boolean | Variant$InventoryArgs<ExtArgs>
     OrderItem?: boolean | Variant$OrderItemArgs<ExtArgs>
     Product?: boolean | ProductDefaultArgs<ExtArgs>
+    RemainingInventory?: boolean | Variant$RemainingInventoryArgs<ExtArgs>
     _count?: boolean | VariantCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["variant"]>
 
@@ -9102,6 +10372,7 @@ export namespace Prisma {
     Inventory?: boolean | Variant$InventoryArgs<ExtArgs>
     OrderItem?: boolean | Variant$OrderItemArgs<ExtArgs>
     Product?: boolean | ProductDefaultArgs<ExtArgs>
+    RemainingInventory?: boolean | Variant$RemainingInventoryArgs<ExtArgs>
     _count?: boolean | VariantCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VariantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9118,6 +10389,7 @@ export namespace Prisma {
       Inventory: Prisma.$InventoryPayload<ExtArgs>[]
       OrderItem: Prisma.$OrderItemPayload<ExtArgs>[]
       Product: Prisma.$ProductPayload<ExtArgs>
+      RemainingInventory: Prisma.$RemainingInventoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9522,6 +10794,7 @@ export namespace Prisma {
     Inventory<T extends Variant$InventoryArgs<ExtArgs> = {}>(args?: Subset<T, Variant$InventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     OrderItem<T extends Variant$OrderItemArgs<ExtArgs> = {}>(args?: Subset<T, Variant$OrderItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    RemainingInventory<T extends Variant$RemainingInventoryArgs<ExtArgs> = {}>(args?: Subset<T, Variant$RemainingInventoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RemainingInventoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10023,6 +11296,30 @@ export namespace Prisma {
   }
 
   /**
+   * Variant.RemainingInventory
+   */
+  export type Variant$RemainingInventoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RemainingInventory
+     */
+    select?: RemainingInventorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RemainingInventory
+     */
+    omit?: RemainingInventoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RemainingInventoryInclude<ExtArgs> | null
+    where?: RemainingInventoryWhereInput
+    orderBy?: RemainingInventoryOrderByWithRelationInput | RemainingInventoryOrderByWithRelationInput[]
+    cursor?: RemainingInventoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RemainingInventoryScalarFieldEnum | RemainingInventoryScalarFieldEnum[]
+  }
+
+  /**
    * Variant without action
    */
   export type VariantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10096,6 +11393,18 @@ export namespace Prisma {
   };
 
   export type InventoryScalarFieldEnum = (typeof InventoryScalarFieldEnum)[keyof typeof InventoryScalarFieldEnum]
+
+
+  export const RemainingInventoryScalarFieldEnum: {
+    id: 'id',
+    productId: 'productId',
+    variantId: 'variantId',
+    quantity: 'quantity',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RemainingInventoryScalarFieldEnum = (typeof RemainingInventoryScalarFieldEnum)[keyof typeof RemainingInventoryScalarFieldEnum]
 
 
   export const OrderScalarFieldEnum: {
@@ -10551,6 +11860,72 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Inventory"> | Date | string
   }
 
+  export type RemainingInventoryWhereInput = {
+    AND?: RemainingInventoryWhereInput | RemainingInventoryWhereInput[]
+    OR?: RemainingInventoryWhereInput[]
+    NOT?: RemainingInventoryWhereInput | RemainingInventoryWhereInput[]
+    id?: StringFilter<"RemainingInventory"> | string
+    productId?: StringFilter<"RemainingInventory"> | string
+    variantId?: StringNullableFilter<"RemainingInventory"> | string | null
+    quantity?: IntFilter<"RemainingInventory"> | number
+    createdAt?: DateTimeFilter<"RemainingInventory"> | Date | string
+    updatedAt?: DateTimeFilter<"RemainingInventory"> | Date | string
+    Product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    Variant?: XOR<VariantNullableScalarRelationFilter, VariantWhereInput> | null
+  }
+
+  export type RemainingInventoryOrderByWithRelationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    variantId?: SortOrderInput | SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    Product?: ProductOrderByWithRelationInput
+    Variant?: VariantOrderByWithRelationInput
+  }
+
+  export type RemainingInventoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    productId_variantId?: RemainingInventoryProductIdVariantIdCompoundUniqueInput
+    AND?: RemainingInventoryWhereInput | RemainingInventoryWhereInput[]
+    OR?: RemainingInventoryWhereInput[]
+    NOT?: RemainingInventoryWhereInput | RemainingInventoryWhereInput[]
+    productId?: StringFilter<"RemainingInventory"> | string
+    variantId?: StringNullableFilter<"RemainingInventory"> | string | null
+    quantity?: IntFilter<"RemainingInventory"> | number
+    createdAt?: DateTimeFilter<"RemainingInventory"> | Date | string
+    updatedAt?: DateTimeFilter<"RemainingInventory"> | Date | string
+    Product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    Variant?: XOR<VariantNullableScalarRelationFilter, VariantWhereInput> | null
+  }, "id" | "productId_variantId">
+
+  export type RemainingInventoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    variantId?: SortOrderInput | SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RemainingInventoryCountOrderByAggregateInput
+    _avg?: RemainingInventoryAvgOrderByAggregateInput
+    _max?: RemainingInventoryMaxOrderByAggregateInput
+    _min?: RemainingInventoryMinOrderByAggregateInput
+    _sum?: RemainingInventorySumOrderByAggregateInput
+  }
+
+  export type RemainingInventoryScalarWhereWithAggregatesInput = {
+    AND?: RemainingInventoryScalarWhereWithAggregatesInput | RemainingInventoryScalarWhereWithAggregatesInput[]
+    OR?: RemainingInventoryScalarWhereWithAggregatesInput[]
+    NOT?: RemainingInventoryScalarWhereWithAggregatesInput | RemainingInventoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RemainingInventory"> | string
+    productId?: StringWithAggregatesFilter<"RemainingInventory"> | string
+    variantId?: StringNullableWithAggregatesFilter<"RemainingInventory"> | string | null
+    quantity?: IntWithAggregatesFilter<"RemainingInventory"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"RemainingInventory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RemainingInventory"> | Date | string
+  }
+
   export type OrderWhereInput = {
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
@@ -10762,6 +12137,7 @@ export namespace Prisma {
     Inventory?: InventoryListRelationFilter
     OrderItem?: OrderItemListRelationFilter
     Variant?: VariantListRelationFilter
+    RemainingInventory?: RemainingInventoryListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -10774,6 +12150,7 @@ export namespace Prisma {
     Inventory?: InventoryOrderByRelationAggregateInput
     OrderItem?: OrderItemOrderByRelationAggregateInput
     Variant?: VariantOrderByRelationAggregateInput
+    RemainingInventory?: RemainingInventoryOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -10789,6 +12166,7 @@ export namespace Prisma {
     Inventory?: InventoryListRelationFilter
     OrderItem?: OrderItemListRelationFilter
     Variant?: VariantListRelationFilter
+    RemainingInventory?: RemainingInventoryListRelationFilter
   }, "id">
 
   export type ProductOrderByWithAggregationInput = {
@@ -10827,6 +12205,7 @@ export namespace Prisma {
     Inventory?: InventoryListRelationFilter
     OrderItem?: OrderItemListRelationFilter
     Product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    RemainingInventory?: RemainingInventoryListRelationFilter
   }
 
   export type VariantOrderByWithRelationInput = {
@@ -10838,6 +12217,7 @@ export namespace Prisma {
     Inventory?: InventoryOrderByRelationAggregateInput
     OrderItem?: OrderItemOrderByRelationAggregateInput
     Product?: ProductOrderByWithRelationInput
+    RemainingInventory?: RemainingInventoryOrderByRelationAggregateInput
   }
 
   export type VariantWhereUniqueInput = Prisma.AtLeast<{
@@ -10852,6 +12232,7 @@ export namespace Prisma {
     Inventory?: InventoryListRelationFilter
     OrderItem?: OrderItemListRelationFilter
     Product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    RemainingInventory?: RemainingInventoryListRelationFilter
   }, "id">
 
   export type VariantOrderByWithAggregationInput = {
@@ -11120,6 +12501,67 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RemainingInventoryCreateInput = {
+    id?: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Product: ProductCreateNestedOneWithoutRemainingInventoryInput
+    Variant?: VariantCreateNestedOneWithoutRemainingInventoryInput
+  }
+
+  export type RemainingInventoryUncheckedCreateInput = {
+    id?: string
+    productId: string
+    variantId?: string | null
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemainingInventoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Product?: ProductUpdateOneRequiredWithoutRemainingInventoryNestedInput
+    Variant?: VariantUpdateOneWithoutRemainingInventoryNestedInput
+  }
+
+  export type RemainingInventoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemainingInventoryCreateManyInput = {
+    id?: string
+    productId: string
+    variantId?: string | null
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemainingInventoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemainingInventoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrderCreateInput = {
     id?: string
     userName: string
@@ -11347,6 +12789,7 @@ export namespace Prisma {
     Inventory?: InventoryCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemCreateNestedManyWithoutProductInput
     Variant?: VariantCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -11359,6 +12802,7 @@ export namespace Prisma {
     Inventory?: InventoryUncheckedCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutProductInput
     Variant?: VariantUncheckedCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -11371,6 +12815,7 @@ export namespace Prisma {
     Inventory?: InventoryUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUpdateManyWithoutProductNestedInput
     Variant?: VariantUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -11383,6 +12828,7 @@ export namespace Prisma {
     Inventory?: InventoryUncheckedUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
     Variant?: VariantUncheckedUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -11417,6 +12863,7 @@ export namespace Prisma {
     Inventory?: InventoryCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemCreateNestedManyWithoutVariantInput
     Product: ProductCreateNestedOneWithoutVariantInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutVariantInput
   }
 
   export type VariantUncheckedCreateInput = {
@@ -11427,6 +12874,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutVariantInput
     Inventory?: InventoryUncheckedCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutVariantInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutVariantInput
   }
 
   export type VariantUpdateInput = {
@@ -11437,6 +12885,7 @@ export namespace Prisma {
     Inventory?: InventoryUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUpdateManyWithoutVariantNestedInput
     Product?: ProductUpdateOneRequiredWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantUncheckedUpdateInput = {
@@ -11447,6 +12896,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutVariantNestedInput
     Inventory?: InventoryUncheckedUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantCreateManyInput = {
@@ -11852,6 +13302,46 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type RemainingInventoryProductIdVariantIdCompoundUniqueInput = {
+    productId: string
+    variantId: string
+  }
+
+  export type RemainingInventoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    variantId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RemainingInventoryAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type RemainingInventoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    variantId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RemainingInventoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    variantId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RemainingInventorySumOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
   export type EnumHallFilter<$PrismaModel = never> = {
     equals?: $Enums.Hall | EnumHallFieldRefInput<$PrismaModel>
     in?: $Enums.Hall[] | ListEnumHallFieldRefInput<$PrismaModel>
@@ -12039,7 +13529,17 @@ export namespace Prisma {
     none?: VariantWhereInput
   }
 
+  export type RemainingInventoryListRelationFilter = {
+    every?: RemainingInventoryWhereInput
+    some?: RemainingInventoryWhereInput
+    none?: RemainingInventoryWhereInput
+  }
+
   export type VariantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RemainingInventoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12380,6 +13880,36 @@ export namespace Prisma {
     update?: XOR<XOR<VariantUpdateToOneWithWhereWithoutInventoryInput, VariantUpdateWithoutInventoryInput>, VariantUncheckedUpdateWithoutInventoryInput>
   }
 
+  export type ProductCreateNestedOneWithoutRemainingInventoryInput = {
+    create?: XOR<ProductCreateWithoutRemainingInventoryInput, ProductUncheckedCreateWithoutRemainingInventoryInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutRemainingInventoryInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type VariantCreateNestedOneWithoutRemainingInventoryInput = {
+    create?: XOR<VariantCreateWithoutRemainingInventoryInput, VariantUncheckedCreateWithoutRemainingInventoryInput>
+    connectOrCreate?: VariantCreateOrConnectWithoutRemainingInventoryInput
+    connect?: VariantWhereUniqueInput
+  }
+
+  export type ProductUpdateOneRequiredWithoutRemainingInventoryNestedInput = {
+    create?: XOR<ProductCreateWithoutRemainingInventoryInput, ProductUncheckedCreateWithoutRemainingInventoryInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutRemainingInventoryInput
+    upsert?: ProductUpsertWithoutRemainingInventoryInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutRemainingInventoryInput, ProductUpdateWithoutRemainingInventoryInput>, ProductUncheckedUpdateWithoutRemainingInventoryInput>
+  }
+
+  export type VariantUpdateOneWithoutRemainingInventoryNestedInput = {
+    create?: XOR<VariantCreateWithoutRemainingInventoryInput, VariantUncheckedCreateWithoutRemainingInventoryInput>
+    connectOrCreate?: VariantCreateOrConnectWithoutRemainingInventoryInput
+    upsert?: VariantUpsertWithoutRemainingInventoryInput
+    disconnect?: VariantWhereInput | boolean
+    delete?: VariantWhereInput | boolean
+    connect?: VariantWhereUniqueInput
+    update?: XOR<XOR<VariantUpdateToOneWithWhereWithoutRemainingInventoryInput, VariantUpdateWithoutRemainingInventoryInput>, VariantUncheckedUpdateWithoutRemainingInventoryInput>
+  }
+
   export type UserCreateNestedOneWithoutOrderInput = {
     create?: XOR<UserCreateWithoutOrderInput, UserUncheckedCreateWithoutOrderInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrderInput
@@ -12516,6 +14046,13 @@ export namespace Prisma {
     connect?: VariantWhereUniqueInput | VariantWhereUniqueInput[]
   }
 
+  export type RemainingInventoryCreateNestedManyWithoutProductInput = {
+    create?: XOR<RemainingInventoryCreateWithoutProductInput, RemainingInventoryUncheckedCreateWithoutProductInput> | RemainingInventoryCreateWithoutProductInput[] | RemainingInventoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutProductInput | RemainingInventoryCreateOrConnectWithoutProductInput[]
+    createMany?: RemainingInventoryCreateManyProductInputEnvelope
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+  }
+
   export type FinanceExpenseUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<FinanceExpenseCreateWithoutProductInput, FinanceExpenseUncheckedCreateWithoutProductInput> | FinanceExpenseCreateWithoutProductInput[] | FinanceExpenseUncheckedCreateWithoutProductInput[]
     connectOrCreate?: FinanceExpenseCreateOrConnectWithoutProductInput | FinanceExpenseCreateOrConnectWithoutProductInput[]
@@ -12542,6 +14079,13 @@ export namespace Prisma {
     connectOrCreate?: VariantCreateOrConnectWithoutProductInput | VariantCreateOrConnectWithoutProductInput[]
     createMany?: VariantCreateManyProductInputEnvelope
     connect?: VariantWhereUniqueInput | VariantWhereUniqueInput[]
+  }
+
+  export type RemainingInventoryUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<RemainingInventoryCreateWithoutProductInput, RemainingInventoryUncheckedCreateWithoutProductInput> | RemainingInventoryCreateWithoutProductInput[] | RemainingInventoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutProductInput | RemainingInventoryCreateOrConnectWithoutProductInput[]
+    createMany?: RemainingInventoryCreateManyProductInputEnvelope
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
@@ -12608,6 +14152,20 @@ export namespace Prisma {
     deleteMany?: VariantScalarWhereInput | VariantScalarWhereInput[]
   }
 
+  export type RemainingInventoryUpdateManyWithoutProductNestedInput = {
+    create?: XOR<RemainingInventoryCreateWithoutProductInput, RemainingInventoryUncheckedCreateWithoutProductInput> | RemainingInventoryCreateWithoutProductInput[] | RemainingInventoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutProductInput | RemainingInventoryCreateOrConnectWithoutProductInput[]
+    upsert?: RemainingInventoryUpsertWithWhereUniqueWithoutProductInput | RemainingInventoryUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: RemainingInventoryCreateManyProductInputEnvelope
+    set?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    disconnect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    delete?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    update?: RemainingInventoryUpdateWithWhereUniqueWithoutProductInput | RemainingInventoryUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: RemainingInventoryUpdateManyWithWhereWithoutProductInput | RemainingInventoryUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: RemainingInventoryScalarWhereInput | RemainingInventoryScalarWhereInput[]
+  }
+
   export type FinanceExpenseUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<FinanceExpenseCreateWithoutProductInput, FinanceExpenseUncheckedCreateWithoutProductInput> | FinanceExpenseCreateWithoutProductInput[] | FinanceExpenseUncheckedCreateWithoutProductInput[]
     connectOrCreate?: FinanceExpenseCreateOrConnectWithoutProductInput | FinanceExpenseCreateOrConnectWithoutProductInput[]
@@ -12664,6 +14222,20 @@ export namespace Prisma {
     deleteMany?: VariantScalarWhereInput | VariantScalarWhereInput[]
   }
 
+  export type RemainingInventoryUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<RemainingInventoryCreateWithoutProductInput, RemainingInventoryUncheckedCreateWithoutProductInput> | RemainingInventoryCreateWithoutProductInput[] | RemainingInventoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutProductInput | RemainingInventoryCreateOrConnectWithoutProductInput[]
+    upsert?: RemainingInventoryUpsertWithWhereUniqueWithoutProductInput | RemainingInventoryUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: RemainingInventoryCreateManyProductInputEnvelope
+    set?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    disconnect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    delete?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    update?: RemainingInventoryUpdateWithWhereUniqueWithoutProductInput | RemainingInventoryUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: RemainingInventoryUpdateManyWithWhereWithoutProductInput | RemainingInventoryUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: RemainingInventoryScalarWhereInput | RemainingInventoryScalarWhereInput[]
+  }
+
   export type FinanceExpenseCreateNestedManyWithoutVariantInput = {
     create?: XOR<FinanceExpenseCreateWithoutVariantInput, FinanceExpenseUncheckedCreateWithoutVariantInput> | FinanceExpenseCreateWithoutVariantInput[] | FinanceExpenseUncheckedCreateWithoutVariantInput[]
     connectOrCreate?: FinanceExpenseCreateOrConnectWithoutVariantInput | FinanceExpenseCreateOrConnectWithoutVariantInput[]
@@ -12691,6 +14263,13 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput
   }
 
+  export type RemainingInventoryCreateNestedManyWithoutVariantInput = {
+    create?: XOR<RemainingInventoryCreateWithoutVariantInput, RemainingInventoryUncheckedCreateWithoutVariantInput> | RemainingInventoryCreateWithoutVariantInput[] | RemainingInventoryUncheckedCreateWithoutVariantInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutVariantInput | RemainingInventoryCreateOrConnectWithoutVariantInput[]
+    createMany?: RemainingInventoryCreateManyVariantInputEnvelope
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+  }
+
   export type FinanceExpenseUncheckedCreateNestedManyWithoutVariantInput = {
     create?: XOR<FinanceExpenseCreateWithoutVariantInput, FinanceExpenseUncheckedCreateWithoutVariantInput> | FinanceExpenseCreateWithoutVariantInput[] | FinanceExpenseUncheckedCreateWithoutVariantInput[]
     connectOrCreate?: FinanceExpenseCreateOrConnectWithoutVariantInput | FinanceExpenseCreateOrConnectWithoutVariantInput[]
@@ -12710,6 +14289,13 @@ export namespace Prisma {
     connectOrCreate?: OrderItemCreateOrConnectWithoutVariantInput | OrderItemCreateOrConnectWithoutVariantInput[]
     createMany?: OrderItemCreateManyVariantInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+  }
+
+  export type RemainingInventoryUncheckedCreateNestedManyWithoutVariantInput = {
+    create?: XOR<RemainingInventoryCreateWithoutVariantInput, RemainingInventoryUncheckedCreateWithoutVariantInput> | RemainingInventoryCreateWithoutVariantInput[] | RemainingInventoryUncheckedCreateWithoutVariantInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutVariantInput | RemainingInventoryCreateOrConnectWithoutVariantInput[]
+    createMany?: RemainingInventoryCreateManyVariantInputEnvelope
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
   }
 
   export type FinanceExpenseUpdateManyWithoutVariantNestedInput = {
@@ -12762,6 +14348,20 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutVariantInput, ProductUpdateWithoutVariantInput>, ProductUncheckedUpdateWithoutVariantInput>
   }
 
+  export type RemainingInventoryUpdateManyWithoutVariantNestedInput = {
+    create?: XOR<RemainingInventoryCreateWithoutVariantInput, RemainingInventoryUncheckedCreateWithoutVariantInput> | RemainingInventoryCreateWithoutVariantInput[] | RemainingInventoryUncheckedCreateWithoutVariantInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutVariantInput | RemainingInventoryCreateOrConnectWithoutVariantInput[]
+    upsert?: RemainingInventoryUpsertWithWhereUniqueWithoutVariantInput | RemainingInventoryUpsertWithWhereUniqueWithoutVariantInput[]
+    createMany?: RemainingInventoryCreateManyVariantInputEnvelope
+    set?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    disconnect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    delete?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    update?: RemainingInventoryUpdateWithWhereUniqueWithoutVariantInput | RemainingInventoryUpdateWithWhereUniqueWithoutVariantInput[]
+    updateMany?: RemainingInventoryUpdateManyWithWhereWithoutVariantInput | RemainingInventoryUpdateManyWithWhereWithoutVariantInput[]
+    deleteMany?: RemainingInventoryScalarWhereInput | RemainingInventoryScalarWhereInput[]
+  }
+
   export type FinanceExpenseUncheckedUpdateManyWithoutVariantNestedInput = {
     create?: XOR<FinanceExpenseCreateWithoutVariantInput, FinanceExpenseUncheckedCreateWithoutVariantInput> | FinanceExpenseCreateWithoutVariantInput[] | FinanceExpenseUncheckedCreateWithoutVariantInput[]
     connectOrCreate?: FinanceExpenseCreateOrConnectWithoutVariantInput | FinanceExpenseCreateOrConnectWithoutVariantInput[]
@@ -12802,6 +14402,20 @@ export namespace Prisma {
     update?: OrderItemUpdateWithWhereUniqueWithoutVariantInput | OrderItemUpdateWithWhereUniqueWithoutVariantInput[]
     updateMany?: OrderItemUpdateManyWithWhereWithoutVariantInput | OrderItemUpdateManyWithWhereWithoutVariantInput[]
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+  }
+
+  export type RemainingInventoryUncheckedUpdateManyWithoutVariantNestedInput = {
+    create?: XOR<RemainingInventoryCreateWithoutVariantInput, RemainingInventoryUncheckedCreateWithoutVariantInput> | RemainingInventoryCreateWithoutVariantInput[] | RemainingInventoryUncheckedCreateWithoutVariantInput[]
+    connectOrCreate?: RemainingInventoryCreateOrConnectWithoutVariantInput | RemainingInventoryCreateOrConnectWithoutVariantInput[]
+    upsert?: RemainingInventoryUpsertWithWhereUniqueWithoutVariantInput | RemainingInventoryUpsertWithWhereUniqueWithoutVariantInput[]
+    createMany?: RemainingInventoryCreateManyVariantInputEnvelope
+    set?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    disconnect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    delete?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    connect?: RemainingInventoryWhereUniqueInput | RemainingInventoryWhereUniqueInput[]
+    update?: RemainingInventoryUpdateWithWhereUniqueWithoutVariantInput | RemainingInventoryUpdateWithWhereUniqueWithoutVariantInput[]
+    updateMany?: RemainingInventoryUpdateManyWithWhereWithoutVariantInput | RemainingInventoryUpdateManyWithWhereWithoutVariantInput[]
+    deleteMany?: RemainingInventoryScalarWhereInput | RemainingInventoryScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -13336,6 +14950,7 @@ export namespace Prisma {
     Inventory?: InventoryCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemCreateNestedManyWithoutProductInput
     Variant?: VariantCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutFinanceExpenseInput = {
@@ -13347,6 +14962,7 @@ export namespace Prisma {
     Inventory?: InventoryUncheckedCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutProductInput
     Variant?: VariantUncheckedCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutFinanceExpenseInput = {
@@ -13361,6 +14977,7 @@ export namespace Prisma {
     Inventory?: InventoryCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemCreateNestedManyWithoutVariantInput
     Product: ProductCreateNestedOneWithoutVariantInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutVariantInput
   }
 
   export type VariantUncheckedCreateWithoutFinanceExpenseInput = {
@@ -13370,6 +14987,7 @@ export namespace Prisma {
     productId: string
     Inventory?: InventoryUncheckedCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutVariantInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutVariantInput
   }
 
   export type VariantCreateOrConnectWithoutFinanceExpenseInput = {
@@ -13432,6 +15050,7 @@ export namespace Prisma {
     Inventory?: InventoryUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUpdateManyWithoutProductNestedInput
     Variant?: VariantUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutFinanceExpenseInput = {
@@ -13443,6 +15062,7 @@ export namespace Prisma {
     Inventory?: InventoryUncheckedUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
     Variant?: VariantUncheckedUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type VariantUpsertWithoutFinanceExpenseInput = {
@@ -13463,6 +15083,7 @@ export namespace Prisma {
     Inventory?: InventoryUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUpdateManyWithoutVariantNestedInput
     Product?: ProductUpdateOneRequiredWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantUncheckedUpdateWithoutFinanceExpenseInput = {
@@ -13472,6 +15093,7 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     Inventory?: InventoryUncheckedUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutVariantNestedInput
   }
 
   export type UserCreateWithoutInventoryInput = {
@@ -13512,6 +15134,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemCreateNestedManyWithoutProductInput
     Variant?: VariantCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutInventoryInput = {
@@ -13523,6 +15146,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutProductInput
     Variant?: VariantUncheckedCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutInventoryInput = {
@@ -13537,6 +15161,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemCreateNestedManyWithoutVariantInput
     Product: ProductCreateNestedOneWithoutVariantInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutVariantInput
   }
 
   export type VariantUncheckedCreateWithoutInventoryInput = {
@@ -13546,6 +15171,7 @@ export namespace Prisma {
     productId: string
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutVariantInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutVariantInput
   }
 
   export type VariantCreateOrConnectWithoutInventoryInput = {
@@ -13608,6 +15234,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUpdateManyWithoutProductNestedInput
     Variant?: VariantUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutInventoryInput = {
@@ -13619,6 +15246,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
     Variant?: VariantUncheckedUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type VariantUpsertWithoutInventoryInput = {
@@ -13639,6 +15267,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUpdateManyWithoutVariantNestedInput
     Product?: ProductUpdateOneRequiredWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantUncheckedUpdateWithoutInventoryInput = {
@@ -13647,6 +15276,127 @@ export namespace Prisma {
     variantPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     productId?: StringFieldUpdateOperationsInput | string
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutVariantNestedInput
+    OrderItem?: OrderItemUncheckedUpdateManyWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutVariantNestedInput
+  }
+
+  export type ProductCreateWithoutRemainingInventoryInput = {
+    id?: string
+    name: string
+    price?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    FinanceExpense?: FinanceExpenseCreateNestedManyWithoutProductInput
+    Inventory?: InventoryCreateNestedManyWithoutProductInput
+    OrderItem?: OrderItemCreateNestedManyWithoutProductInput
+    Variant?: VariantCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutRemainingInventoryInput = {
+    id?: string
+    name: string
+    price?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutProductInput
+    Inventory?: InventoryUncheckedCreateNestedManyWithoutProductInput
+    OrderItem?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    Variant?: VariantUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutRemainingInventoryInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutRemainingInventoryInput, ProductUncheckedCreateWithoutRemainingInventoryInput>
+  }
+
+  export type VariantCreateWithoutRemainingInventoryInput = {
+    id?: string
+    name: string
+    variantPrice: Decimal | DecimalJsLike | number | string
+    FinanceExpense?: FinanceExpenseCreateNestedManyWithoutVariantInput
+    Inventory?: InventoryCreateNestedManyWithoutVariantInput
+    OrderItem?: OrderItemCreateNestedManyWithoutVariantInput
+    Product: ProductCreateNestedOneWithoutVariantInput
+  }
+
+  export type VariantUncheckedCreateWithoutRemainingInventoryInput = {
+    id?: string
+    name: string
+    variantPrice: Decimal | DecimalJsLike | number | string
+    productId: string
+    FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutVariantInput
+    Inventory?: InventoryUncheckedCreateNestedManyWithoutVariantInput
+    OrderItem?: OrderItemUncheckedCreateNestedManyWithoutVariantInput
+  }
+
+  export type VariantCreateOrConnectWithoutRemainingInventoryInput = {
+    where: VariantWhereUniqueInput
+    create: XOR<VariantCreateWithoutRemainingInventoryInput, VariantUncheckedCreateWithoutRemainingInventoryInput>
+  }
+
+  export type ProductUpsertWithoutRemainingInventoryInput = {
+    update: XOR<ProductUpdateWithoutRemainingInventoryInput, ProductUncheckedUpdateWithoutRemainingInventoryInput>
+    create: XOR<ProductCreateWithoutRemainingInventoryInput, ProductUncheckedCreateWithoutRemainingInventoryInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutRemainingInventoryInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutRemainingInventoryInput, ProductUncheckedUpdateWithoutRemainingInventoryInput>
+  }
+
+  export type ProductUpdateWithoutRemainingInventoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FinanceExpense?: FinanceExpenseUpdateManyWithoutProductNestedInput
+    Inventory?: InventoryUpdateManyWithoutProductNestedInput
+    OrderItem?: OrderItemUpdateManyWithoutProductNestedInput
+    Variant?: VariantUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutRemainingInventoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutProductNestedInput
+    Inventory?: InventoryUncheckedUpdateManyWithoutProductNestedInput
+    OrderItem?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    Variant?: VariantUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type VariantUpsertWithoutRemainingInventoryInput = {
+    update: XOR<VariantUpdateWithoutRemainingInventoryInput, VariantUncheckedUpdateWithoutRemainingInventoryInput>
+    create: XOR<VariantCreateWithoutRemainingInventoryInput, VariantUncheckedCreateWithoutRemainingInventoryInput>
+    where?: VariantWhereInput
+  }
+
+  export type VariantUpdateToOneWithWhereWithoutRemainingInventoryInput = {
+    where?: VariantWhereInput
+    data: XOR<VariantUpdateWithoutRemainingInventoryInput, VariantUncheckedUpdateWithoutRemainingInventoryInput>
+  }
+
+  export type VariantUpdateWithoutRemainingInventoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    variantPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    FinanceExpense?: FinanceExpenseUpdateManyWithoutVariantNestedInput
+    Inventory?: InventoryUpdateManyWithoutVariantNestedInput
+    OrderItem?: OrderItemUpdateManyWithoutVariantNestedInput
+    Product?: ProductUpdateOneRequiredWithoutVariantNestedInput
+  }
+
+  export type VariantUncheckedUpdateWithoutRemainingInventoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    variantPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productId?: StringFieldUpdateOperationsInput | string
+    FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutVariantNestedInput
+    Inventory?: InventoryUncheckedUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutVariantNestedInput
   }
 
@@ -13830,6 +15580,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseCreateNestedManyWithoutProductInput
     Inventory?: InventoryCreateNestedManyWithoutProductInput
     Variant?: VariantCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutOrderItemInput = {
@@ -13841,6 +15592,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutProductInput
     Inventory?: InventoryUncheckedCreateNestedManyWithoutProductInput
     Variant?: VariantUncheckedCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrderItemInput = {
@@ -13855,6 +15607,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseCreateNestedManyWithoutVariantInput
     Inventory?: InventoryCreateNestedManyWithoutVariantInput
     Product: ProductCreateNestedOneWithoutVariantInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutVariantInput
   }
 
   export type VariantUncheckedCreateWithoutOrderItemInput = {
@@ -13864,6 +15617,7 @@ export namespace Prisma {
     productId: string
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutVariantInput
     Inventory?: InventoryUncheckedCreateNestedManyWithoutVariantInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutVariantInput
   }
 
   export type VariantCreateOrConnectWithoutOrderItemInput = {
@@ -13938,6 +15692,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUpdateManyWithoutProductNestedInput
     Inventory?: InventoryUpdateManyWithoutProductNestedInput
     Variant?: VariantUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutOrderItemInput = {
@@ -13949,6 +15704,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutProductNestedInput
     Inventory?: InventoryUncheckedUpdateManyWithoutProductNestedInput
     Variant?: VariantUncheckedUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type VariantUpsertWithoutOrderItemInput = {
@@ -13969,6 +15725,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUpdateManyWithoutVariantNestedInput
     Inventory?: InventoryUpdateManyWithoutVariantNestedInput
     Product?: ProductUpdateOneRequiredWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantUncheckedUpdateWithoutOrderItemInput = {
@@ -13978,6 +15735,7 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutVariantNestedInput
     Inventory?: InventoryUncheckedUpdateManyWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutVariantNestedInput
   }
 
   export type FinanceExpenseCreateWithoutProductInput = {
@@ -14085,6 +15843,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseCreateNestedManyWithoutVariantInput
     Inventory?: InventoryCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemCreateNestedManyWithoutVariantInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutVariantInput
   }
 
   export type VariantUncheckedCreateWithoutProductInput = {
@@ -14094,6 +15853,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutVariantInput
     Inventory?: InventoryUncheckedCreateNestedManyWithoutVariantInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutVariantInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutVariantInput
   }
 
   export type VariantCreateOrConnectWithoutProductInput = {
@@ -14103,6 +15863,32 @@ export namespace Prisma {
 
   export type VariantCreateManyProductInputEnvelope = {
     data: VariantCreateManyProductInput | VariantCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RemainingInventoryCreateWithoutProductInput = {
+    id?: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Variant?: VariantCreateNestedOneWithoutRemainingInventoryInput
+  }
+
+  export type RemainingInventoryUncheckedCreateWithoutProductInput = {
+    id?: string
+    variantId?: string | null
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemainingInventoryCreateOrConnectWithoutProductInput = {
+    where: RemainingInventoryWhereUniqueInput
+    create: XOR<RemainingInventoryCreateWithoutProductInput, RemainingInventoryUncheckedCreateWithoutProductInput>
+  }
+
+  export type RemainingInventoryCreateManyProductInputEnvelope = {
+    data: RemainingInventoryCreateManyProductInput | RemainingInventoryCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -14178,6 +15964,34 @@ export namespace Prisma {
     name?: StringFilter<"Variant"> | string
     variantPrice?: DecimalFilter<"Variant"> | Decimal | DecimalJsLike | number | string
     productId?: StringFilter<"Variant"> | string
+  }
+
+  export type RemainingInventoryUpsertWithWhereUniqueWithoutProductInput = {
+    where: RemainingInventoryWhereUniqueInput
+    update: XOR<RemainingInventoryUpdateWithoutProductInput, RemainingInventoryUncheckedUpdateWithoutProductInput>
+    create: XOR<RemainingInventoryCreateWithoutProductInput, RemainingInventoryUncheckedCreateWithoutProductInput>
+  }
+
+  export type RemainingInventoryUpdateWithWhereUniqueWithoutProductInput = {
+    where: RemainingInventoryWhereUniqueInput
+    data: XOR<RemainingInventoryUpdateWithoutProductInput, RemainingInventoryUncheckedUpdateWithoutProductInput>
+  }
+
+  export type RemainingInventoryUpdateManyWithWhereWithoutProductInput = {
+    where: RemainingInventoryScalarWhereInput
+    data: XOR<RemainingInventoryUpdateManyMutationInput, RemainingInventoryUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type RemainingInventoryScalarWhereInput = {
+    AND?: RemainingInventoryScalarWhereInput | RemainingInventoryScalarWhereInput[]
+    OR?: RemainingInventoryScalarWhereInput[]
+    NOT?: RemainingInventoryScalarWhereInput | RemainingInventoryScalarWhereInput[]
+    id?: StringFilter<"RemainingInventory"> | string
+    productId?: StringFilter<"RemainingInventory"> | string
+    variantId?: StringNullableFilter<"RemainingInventory"> | string | null
+    quantity?: IntFilter<"RemainingInventory"> | number
+    createdAt?: DateTimeFilter<"RemainingInventory"> | Date | string
+    updatedAt?: DateTimeFilter<"RemainingInventory"> | Date | string
   }
 
   export type FinanceExpenseCreateWithoutVariantInput = {
@@ -14287,6 +16101,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseCreateNestedManyWithoutProductInput
     Inventory?: InventoryCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVariantInput = {
@@ -14298,11 +16113,38 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedCreateNestedManyWithoutProductInput
     Inventory?: InventoryUncheckedCreateNestedManyWithoutProductInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    RemainingInventory?: RemainingInventoryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVariantInput = {
     where: ProductWhereUniqueInput
     create: XOR<ProductCreateWithoutVariantInput, ProductUncheckedCreateWithoutVariantInput>
+  }
+
+  export type RemainingInventoryCreateWithoutVariantInput = {
+    id?: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Product: ProductCreateNestedOneWithoutRemainingInventoryInput
+  }
+
+  export type RemainingInventoryUncheckedCreateWithoutVariantInput = {
+    id?: string
+    productId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RemainingInventoryCreateOrConnectWithoutVariantInput = {
+    where: RemainingInventoryWhereUniqueInput
+    create: XOR<RemainingInventoryCreateWithoutVariantInput, RemainingInventoryUncheckedCreateWithoutVariantInput>
+  }
+
+  export type RemainingInventoryCreateManyVariantInputEnvelope = {
+    data: RemainingInventoryCreateManyVariantInput | RemainingInventoryCreateManyVariantInput[]
+    skipDuplicates?: boolean
   }
 
   export type FinanceExpenseUpsertWithWhereUniqueWithoutVariantInput = {
@@ -14373,6 +16215,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUpdateManyWithoutProductNestedInput
     Inventory?: InventoryUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVariantInput = {
@@ -14384,6 +16227,23 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutProductNestedInput
     Inventory?: InventoryUncheckedUpdateManyWithoutProductNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type RemainingInventoryUpsertWithWhereUniqueWithoutVariantInput = {
+    where: RemainingInventoryWhereUniqueInput
+    update: XOR<RemainingInventoryUpdateWithoutVariantInput, RemainingInventoryUncheckedUpdateWithoutVariantInput>
+    create: XOR<RemainingInventoryCreateWithoutVariantInput, RemainingInventoryUncheckedCreateWithoutVariantInput>
+  }
+
+  export type RemainingInventoryUpdateWithWhereUniqueWithoutVariantInput = {
+    where: RemainingInventoryWhereUniqueInput
+    data: XOR<RemainingInventoryUpdateWithoutVariantInput, RemainingInventoryUncheckedUpdateWithoutVariantInput>
+  }
+
+  export type RemainingInventoryUpdateManyWithWhereWithoutVariantInput = {
+    where: RemainingInventoryScalarWhereInput
+    data: XOR<RemainingInventoryUpdateManyMutationInput, RemainingInventoryUncheckedUpdateManyWithoutVariantInput>
   }
 
   export type FinanceExpenseCreateManyUserInput = {
@@ -14632,6 +16492,14 @@ export namespace Prisma {
     variantPrice: Decimal | DecimalJsLike | number | string
   }
 
+  export type RemainingInventoryCreateManyProductInput = {
+    id?: string
+    variantId?: string | null
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type FinanceExpenseUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14741,6 +16609,7 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUpdateManyWithoutVariantNestedInput
     Inventory?: InventoryUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUpdateManyWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantUncheckedUpdateWithoutProductInput = {
@@ -14750,12 +16619,37 @@ export namespace Prisma {
     FinanceExpense?: FinanceExpenseUncheckedUpdateManyWithoutVariantNestedInput
     Inventory?: InventoryUncheckedUpdateManyWithoutVariantNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutVariantNestedInput
+    RemainingInventory?: RemainingInventoryUncheckedUpdateManyWithoutVariantNestedInput
   }
 
   export type VariantUncheckedUpdateManyWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     variantPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type RemainingInventoryUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Variant?: VariantUpdateOneWithoutRemainingInventoryNestedInput
+  }
+
+  export type RemainingInventoryUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemainingInventoryUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FinanceExpenseCreateManyVariantInput = {
@@ -14790,6 +16684,14 @@ export namespace Prisma {
     amountPaid: Decimal | DecimalJsLike | number | string
     discount?: Decimal | DecimalJsLike | number | string
     deliveryStatus?: $Enums.DeliveryStatus
+  }
+
+  export type RemainingInventoryCreateManyVariantInput = {
+    id?: string
+    productId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type FinanceExpenseUpdateWithoutVariantInput = {
@@ -14892,6 +16794,30 @@ export namespace Prisma {
     amountPaid?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     discount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deliveryStatus?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+  }
+
+  export type RemainingInventoryUpdateWithoutVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Product?: ProductUpdateOneRequiredWithoutRemainingInventoryNestedInput
+  }
+
+  export type RemainingInventoryUncheckedUpdateWithoutVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RemainingInventoryUncheckedUpdateManyWithoutVariantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

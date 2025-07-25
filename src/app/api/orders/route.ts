@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-
+import { subtractInventoryStock } from "@/lib/inventory-helpers";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -186,8 +186,19 @@ export async function POST(req: NextRequest) {
         User: true,
       },
     });
+
+    // Update remaining inventory for each order item
+    for (const item of orderItemsWithPrice) {
+      await subtractInventoryStock(
+        item.productId,
+        item.variantId,
+        item.quantity
+      );
+    }
+
     return NextResponse.json(order, { status: 201 });
   } catch (e) {
+    console.error("Error creating order:", e);
     return NextResponse.json(
       { error: "Could not create order" },
       { status: 500 }

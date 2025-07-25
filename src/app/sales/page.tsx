@@ -11,7 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Pen, BookPlus, ArrowLeft, ArrowRight } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Pen, BookPlus, ArrowLeft, ArrowRight, Package } from "lucide-react";
 import clsx from "clsx";
 import { AddOrderModal } from "./AddOrderModal";
 
@@ -29,6 +30,19 @@ function asMoney(n: number | string): string {
   });
 }
 
+interface RemainingInventoryItem {
+  id: string;
+  quantity: number;
+  Product: {
+    id: string;
+    name: string;
+  };
+  Variant?: {
+    id: string;
+    name: string;
+  } | null;
+}
+
 export default function OrdersPage() {
   const [tab, setTab] = useState("myorders");
   const [orders, setOrders] = useState<any[]>([]);
@@ -41,9 +55,29 @@ export default function OrdersPage() {
   const [sort, setSort] = useState("createdAt:desc");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [remainingInventory, setRemainingInventory] = useState<
+    RemainingInventoryItem[]
+  >([]);
+  const [inventoryLoading, setInventoryLoading] = useState(true);
   const pageSize = 15;
   const [addOpen, setAddOpen] = useState(false);
 
+  // Fetch remaining inventory
+  useEffect(() => {
+    setInventoryLoading(true);
+    fetch("/api/remaining-inventory")
+      .then((res) => res.json())
+      .then((data) => {
+        setRemainingInventory(data || []);
+        setInventoryLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching inventory:", error);
+        setInventoryLoading(false);
+      });
+  }, [addOpen]); // Refresh when modal closes (in case new order was added)
+
+  // Fetch orders
   useEffect(() => {
     setLoading(true);
     fetch(
@@ -71,8 +105,100 @@ export default function OrdersPage() {
     setPage(1);
   }
 
+  // Get low stock items (quantity <= 5)
+  const lowStockItems = remainingInventory.filter((item) => item.quantity <= 5);
+
   return (
-    <div className="max-w-6xl mx-auto px-4 pb-24 pt-8 relative">
+    <div className="max-w-7xl mx-auto px-4 pb-24 pt-8 relative">
+      {/* Remaining Inventory Section */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Package className="w-5 h-5" />
+            Current Inventory Status
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {inventoryLoading ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Loading inventory...
+            </div>
+          ) : remainingInventory.length > 0 ? (
+            <>
+              {/* Low Stock Alert */}
+              {lowStockItems.length > 0 && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <h4 className="font-semibold text-red-800 mb-2">
+                    ⚠️ Low Stock Alert ({lowStockItems.length} items)
+                  </h4>
+                  <div className="text-sm text-red-700">
+                    {lowStockItems.map((item) => (
+                      <span key={item.id} className="mr-3">
+                        {item.Product.name}{" "}
+                        {item.Variant?.name && `(${item.Variant.name})`}:{" "}
+                        {item.quantity}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Inventory Table */}
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product</TableHead>
+                      <TableHead>Variant</TableHead>
+                      <TableHead className="text-center">
+                        Available Quantity
+                      </TableHead>
+                      <TableHead className="text-center">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {remainingInventory.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="font-medium">
+                          {item.Product.name}
+                        </TableCell>
+                        <TableCell>{item.Variant?.name || "Default"}</TableCell>
+                        <TableCell className="text-center font-semibold">
+                          {item.quantity}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <span
+                            className={clsx(
+                              "px-2 py-1 rounded-full text-xs font-medium",
+                              item.quantity <= 0
+                                ? "bg-red-100 text-red-800"
+                                : item.quantity <= 5
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
+                            )}
+                          >
+                            {item.quantity <= 0
+                              ? "Out of Stock"
+                              : item.quantity <= 5
+                              ? "Low Stock"
+                              : "In Stock"}
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              No inventory data available. Add some inventory to get started.
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Orders Section */}
       <Tabs
         value={tab}
         onValueChange={(v) => {
