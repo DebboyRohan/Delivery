@@ -38,16 +38,21 @@ export default function InventorySection() {
     )
       .then((r) => r.json())
       .then((data) => {
+        console.log("Inventory API Response:", data); // Debug log
         setInventories(data.inventories || []);
         setTotal(data.total || 0);
       })
-      .catch((err) => console.error("Failed to load inventory:", err))
+      .catch((err) => {
+        console.error("Failed to load inventory:", err);
+        setInventories([]);
+        setTotal(0);
+      })
       .finally(() => setLoading(false));
   }
 
   useEffect(() => {
     fetchInventories();
-  }, [page, search]);
+  }, [page, search, addModalOpen]); // Add addModalOpen to refresh when modal closes
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -60,9 +65,15 @@ export default function InventorySection() {
       if (res.ok) {
         fetchInventories();
       } else {
-        alert("Failed to delete inventory record");
+        const errorData = await res.json();
+        alert(
+          `Failed to delete inventory record: ${
+            errorData.error || "Unknown error"
+          }`
+        );
       }
     } catch (error) {
+      console.error("Error deleting inventory record:", error);
       alert("Error deleting inventory record");
     }
   };
@@ -130,7 +141,7 @@ export default function InventorySection() {
                         size="icon"
                         variant="ghost"
                         onClick={() =>
-                          (window.location.href = `/treasurer/inventory/${inventory.id}`)
+                          (window.location.href = `/inventory/${inventory.id}`)
                         }
                       >
                         <Pen className="w-4 h-4" />

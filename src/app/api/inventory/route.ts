@@ -3,22 +3,54 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { addInventoryStock } from "@/lib/inventory-helpers";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const inventory = await prisma.inventory.findMany({
-      include: {
-        Product: true,
-        Variant: true,
-        User: {
-          select: {
-            name: true,
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(searchParams.get("pageSize") || "20", 10);
+    const search = searchParams.get("search") || "";
+
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+
+    // Build where clause for search
+    let where: any = {};
+    if (search.trim()) {
+      where = {
+        OR: [
+          { Product: { name: { contains: search, mode: "insensitive" } } },
+          { Variant: { name: { contains: search, mode: "insensitive" } } },
+          { dealer: { contains: search, mode: "insensitive" } },
+        ],
+      };
+    }
+
+    const [inventories, total] = await Promise.all([
+      prisma.inventory.findMany({
+        where,
+        include: {
+          Product: true,
+          Variant: true,
+          User: {
+            select: {
+              name: true,
+            },
           },
         },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+        orderBy: { createdAt: "desc" },
+        skip,
+        take,
+      }),
+      prisma.inventory.count({ where }),
+    ]);
 
-    return NextResponse.json(inventory);
+    return NextResponse.json({
+      inventories,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    });
   } catch (error) {
     console.error("Error fetching inventory:", error);
     return NextResponse.json(
